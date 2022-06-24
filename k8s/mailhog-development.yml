@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mailhog
+spec:
+  type: NodePort
+  ports:
+    - name: web
+      port: 8025
+      nodePort: 30825
+      targetPort: 8025
+    - name: stmp
+      port: 1025
+      nodePort: 31025
+      targetPort: 1025
+  selector:
+    app: mailhog
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mailhog
+spec:
+  selector:
+    matchLabels:
+      app: mailhog
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mailhog
+    spec:
+      containers:
+        - image: mailhog/mailhog:latest
+          name: mailhog

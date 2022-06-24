@@ -1,0 +1,44 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+  messages:
+    cache-duration: -1
+  mail:
+    protocol: smtp
+    host: 192.168.64.3
+    port: 31025
+    username: test
+    password: test
+    properties:
+      mail:
+        from: test@example.com
+  r2dbc:
+    url: r2dbc:pool:mysql://192.168.64.3:30306/spring-boot-r2dbc-rest-sample?useSSL=false
+    username: root
+    password: passw0rd
+  flyway:
+    schemas: spring-boot-r2dbc-rest-sample
+    url: jdbc:mysql://192.168.64.3:30306/?allowPublicKeyRetrieval=true&useSSL=false
+    user: ${spring.r2dbc.username}
+    password: ${spring.r2dbc.password}
+    baseline-on-migrate: true
+    placeholder-replacement: false
+  redis:
+    host: 192.168.64.3
+    port: 32379
+logging:
+  level:
+    org.springframework.r2dbc: DEBUG
+springdoc:
+  swagger-ui:
+    enabled: true
+
+####
+# アプリケーションの設定
+application:
+  fileUploadLocation: build/sample
+  cors:
+    allowed-headers: "Origin,X-Requested-With,Content-Type,Accept,X-XSRF-TOKEN"
+    allowed-methods: "POST,GET,PUT,OPTIONS,DELETE"
+    allowed-origins: "*"

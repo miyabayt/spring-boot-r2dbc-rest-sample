@@ -1,0 +1,47 @@
+server:
+  forward-headers-strategy: framework
+  port: 8080
+  compression:
+    enabled: true
+spring:
+  profiles:
+    default: local
+  messages:
+    basename: messages,ValidationMessages
+    encoding: UTF-8
+  jackson:
+    # 日付型をISO形式で出力する
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+  servlet:
+    multipart:
+      # アップロードのサイズ制限を設定する
+      max-file-size: 20MB
+      max-request-size: 20MB
+  data:
+    redis.repositories.enabled: false
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info,health,metrics,refresh
+  health:
+    db:
+      enabled: false
+    mail:
+      enabled: false
+springdoc:
+  swagger-ui:
+    enabled: false
+  packagesToScan: com.bigtreetc.sample
+
+####
+# アプリケーションの設定
+application:
+  security:
+    jwt:
+      access-token:
+        signing-key: ${JWT_ACCESS_TOKEN_SIGNING_KEY:rECsevtFUhG4Up8GU3CVZNs9}
+        expired-in: 600000
+      refresh-token:
+        timeout-hours: 2

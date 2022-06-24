@@ -1,0 +1,6 @@
+metadata:
+  name: spring-boot-r2dbc-rest-sample
+rules:
+  - apiGroups: [""] # "" indicates the core API group
+    resources: ["configmaps", "pods", "services", "endpoints", "secrets"]
+    verbs: ["get", "list", "watch"]

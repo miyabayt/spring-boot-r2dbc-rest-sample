@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: spring-boot-r2dbc-rest-sample
+data:
+  application-kubernetes.yml: |-
+    server:
+      shutdown: graceful
+    spring:
+      config:
+        activate:
+          on-profile: kubernetes
+      cloud:
+        kubernetes:
+          reload:
+            enabled: true
+            mode: polling
+            period: 10000
+          config:
+            sources:
+              - name: ${spring.application.name}

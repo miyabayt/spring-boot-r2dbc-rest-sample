@@ -1,0 +1,118 @@
+plugins {
+    id "java"
+    id "groovy"
+    id "idea"
+    id "org.springframework.boot" version "${springBootVersion}"
+    id "io.spring.dependency-management" version "${dependencyManagementVersion}"
+    id "org.eclipse.jkube.kubernetes" version "${jkubeVersion}"
+    id "com.diffplug.spotless" version "${spotlessVersion}"
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    maven { url "https://repo.spring.io/release" }
+}
+
+spotless {
+    java {
+        googleJavaFormat()
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+
+    groovy {
+        trimTrailingWhitespace()
+        indentWithSpaces(4)
+        endWithNewline()
+    }
+
+    groovyGradle {
+        target "*.gradle", "**/*.gradle"
+        trimTrailingWhitespace()
+        indentWithSpaces(4)
+        endWithNewline()
+    }
+
+    format "misc", {
+        target "**/*.md", "**/*.yml"
+        trimTrailingWhitespace()
+        indentWithSpaces(2)
+        endWithNewline()
+    }
+
+    lineEndings "UNIX"
+}
+
+sourceCompatibility = '17'
+[compileJava, compileTestJava, compileGroovy, compileTestGroovy]*.options*.encoding = "UTF-8"
+[compileJava, compileTestJava, compileGroovy, compileTestGroovy]*.options*.compilerArgs = ["--enable-preview", "-Xlint:all"]
+
+dependencies {
+    compileOnly "org.projectlombok:lombok"
+    annotationProcessor "org.projectlombok:lombok"
+    testCompileOnly "org.projectlombok:lombok"
+    testAnnotationProcessor "org.projectlombok:lombok"
+
+    implementation "org.springframework.boot:spring-boot-starter-validation"
+    implementation "org.springframework.boot:spring-boot-starter-thymeleaf"
+    implementation "org.springframework.boot:spring-boot-starter-mail"
+    implementation "org.springframework.boot:spring-boot-starter-security"
+    implementation "org.springframework.boot:spring-boot-starter-webflux"
+    implementation "org.springframework.boot:spring-boot-starter-actuator"
+    implementation "org.springframework.boot:spring-boot-starter-data-r2dbc"
+    implementation "org.springframework.boot:spring-boot-starter-data-redis-reactive"
+    developmentOnly "org.springframework.boot:spring-boot-devtools"
+
+    implementation "com.fasterxml.jackson.module:jackson-module-parameter-names"
+    implementation "com.fasterxml.jackson.datatype:jackson-datatype-jdk8"
+    implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
+    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-csv"
+
+    implementation "org.modelmapper:modelmapper:0.7.5"
+    implementation "com.auth0:java-jwt:3.19.2"
+    implementation "io.projectreactor.addons:reactor-extra"
+    implementation "org.springdoc:springdoc-openapi-webflux-ui:${springdocVersion}"
+    implementation "org.springdoc:springdoc-openapi-security:${springdocVersion}"
+
+    implementation "org.flywaydb:flyway-core"
+    runtimeOnly "dev.miku:r2dbc-mysql"
+    runtimeOnly "mysql:mysql-connector-java"
+    // runtimeOnly "io.r2dbc:r2dbc-postgresql"
+    // runtimeOnly "org.postgresql:postgresql"
+
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation "org.springframework.boot:spring-boot-starter-data-r2dbc"
+    testImplementation "org.springframework.security:spring-security-test"
+    testImplementation "org.spockframework:spock-spring:${spockVersion}"
+    testImplementation "io.projectreactor:reactor-test"
+    testImplementation "com.h2database:h2"
+    testImplementation "io.r2dbc:r2dbc-h2"
+
+    testImplementation "org.assertj:assertj-core"
+    testImplementation "org.codehaus.groovy:groovy"
+    testImplementation platform("org.spockframework:spock-bom:${spockVersion}")
+    testImplementation "org.spockframework:spock-core"
+    testImplementation "org.mockito:mockito-core"
+}
+
+tasks.withType(JavaExec) {
+    jvmArgs += "--enable-preview"
+}
+
+tasks.named("test") {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+task sourceJar(type: Jar, dependsOn: classes) {
+    archiveClassifier.set("sources")
+    from sourceSets.main.allSource
+}
+
+compileJava.dependsOn "spotlessApply"
+k8sBuild.dependsOn "build"
+k8sResource.dependsOn "k8sBuild"
+k8sApply.dependsOn "k8sResource"

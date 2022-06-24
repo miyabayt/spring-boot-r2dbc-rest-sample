@@ -1,0 +1,21 @@
+spec:
+  template:
+    spec:
+      serviceAccount: spring-boot-r2dbc-rest-sample
+      containers:
+        - env:
+          - name: JAVA_OPTS
+            value: >-
+              --illegal-access=deny
+              -Djava.awt.headless=true
+              -Djava.security.egd=file:/dev/./urandom
+              -Dfile.encoding=UTF-8
+              -Duser.language=ja
+              -Duser.country=JP
+              -Duser.timezone=Asia/Tokyo
+          - name: SPRING_PROFILES_ACTIVE
+            value: k8s
+          - name: SPRING_R2DBC_USERNAME
+            value: root
+          - name: SPRING_R2DBC_PASSWORD
+            value: passw0rd

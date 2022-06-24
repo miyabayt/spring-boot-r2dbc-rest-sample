@@ -1,0 +1,9 @@
+metadata:
+  name: spring-boot-r2dbc-rest-sample
+roleRef:
+  kind: Role
+  name: spring-boot-r2dbc-rest-sample
+  apiGroup: rbac.authorization.k8s.io
+subjects:
+  - kind: ServiceAccount
+    name: spring-boot-r2dbc-rest-sample
