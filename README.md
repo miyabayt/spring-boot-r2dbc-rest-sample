@@ -9,6 +9,12 @@
 - Windowsの場合は、コンソール出力が文字化けするため、`C:¥Program Files¥JetBrains¥IntelliJ Idea xx.x.x¥bin`の中にある`idea64.exe.vmoptions`
   ファイルに`-Dfile.encoding=UTF-8`を追記する。
 
+## Docker
+
+```bash
+$ ./gradlew composeUp
+```
+
 ## minikube
 
 ### on MacOS
