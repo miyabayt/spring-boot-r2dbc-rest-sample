@@ -1,0 +1,35 @@
+spring:
+  messages:
+    basename: messages,ValidationMessages,PropertyNames
+    encoding: UTF-8
+  thymeleaf:
+    encoding: UTF-8
+  mail:
+    protocol: smtp
+    username: test
+    password: test
+    properties:
+      mail:
+        from: test@example.com
+  flyway:
+    baseline-on-migrate: true
+    placeholder-replacement: false
+  data:
+    redis:
+      repositories:
+        enabled: false
+logging:
+  level:
+    org.springframework.r2dbc: DEBUG
+
+####
+# アプリケーションの設定
+application:
+  fileUploadLocation: build/sample
+  security:
+    jwt:
+      access-token:
+        signing-key: ${JWT_ACCESS_TOKEN_SIGNING_KEY:rECsevtFUhG4Up8GU3CVZNs9}
+        expired-in: 600000
+      refresh-token:
+        timeout-hours: 2
