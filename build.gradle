@@ -64,7 +64,7 @@ dependencies {
     implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
     implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-csv"
 
-    implementation "org.modelmapper:modelmapper:0.7.5"
+    implementation "org.modelmapper:modelmapper:3.1.0"
     implementation "com.auth0:java-jwt:3.19.2"
     implementation "io.projectreactor.addons:reactor-extra"
     implementation "org.springdoc:springdoc-openapi-webflux-ui:${springdocVersion}"
@@ -96,11 +96,6 @@ tasks.named("test") {
     testLogging {
         events "passed", "skipped", "failed"
     }
-}
-
-task sourceJar(type: Jar, dependsOn: classes) {
-    archiveClassifier.set("sources")
-    from sourceSets.main.allSource
 }
 
 compileJava.dependsOn "spotlessApply"

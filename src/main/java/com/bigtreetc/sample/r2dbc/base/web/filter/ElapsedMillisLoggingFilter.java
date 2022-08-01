@@ -21,26 +21,34 @@ public class ElapsedMillisLoggingFilter implements WebFilter {
 
   @Override
   public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-    val beforeNanoSec = System.nanoTime();
     return this.requiresAuthenticationMatcher
         .matches(exchange)
-        .filter(ServerWebExchangeMatcher.MatchResult::isMatch)
         .flatMap(
             (matchResult) -> {
-              val requestPath = exchange.getRequest().getPath().value();
-              val requestMethod = exchange.getRequest().getMethodValue();
-              val responseStatus = exchange.getResponse().getRawStatusCode();
-              val elapsedNanoSec = System.nanoTime() - beforeNanoSec;
-              val elapsedMilliSec = NANOSECONDS.toMillis(elapsedNanoSec);
-              log.info(
-                  "path={}, method={}, status={}, Elapsed={}ms.",
-                  requestPath,
-                  requestMethod,
-                  responseStatus,
-                  elapsedMilliSec);
-              return Mono.empty();
+              val beforeNanoSec = System.nanoTime();
+              return chain
+                  .filter(exchange)
+                  .doFinally(
+                      done -> {
+                        if (matchResult.isMatch()) {
+                          logElapsed(exchange, beforeNanoSec);
+                        }
+                      });
             })
-        .switchIfEmpty(chain.filter(exchange))
         .then();
+  }
+
+  private void logElapsed(ServerWebExchange exchange, long beforeNanoSec) {
+    val requestPath = exchange.getRequest().getPath().value();
+    val requestMethod = exchange.getRequest().getMethodValue();
+    val responseStatus = exchange.getResponse().getRawStatusCode();
+    val elapsedNanoSec = System.nanoTime() - beforeNanoSec;
+    val elapsedMilliSec = NANOSECONDS.toMillis(elapsedNanoSec);
+    log.info(
+        "path={}, method={}, status={}, Elapsed={}ms.",
+        requestPath,
+        requestMethod,
+        responseStatus,
+        elapsedMilliSec);
   }
 }
