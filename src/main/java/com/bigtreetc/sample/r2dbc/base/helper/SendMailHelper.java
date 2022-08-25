@@ -1,4 +1,4 @@
-package com.bigtreetc.sample.r2dbc.base.domain.helper;
+package com.bigtreetc.sample.r2dbc.base.helper;
 
 import static com.bigtreetc.sample.r2dbc.base.util.ValidateUtils.isNotEmpty;
 

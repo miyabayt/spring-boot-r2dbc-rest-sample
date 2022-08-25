@@ -4,21 +4,13 @@ import static com.bigtreetc.sample.r2dbc.base.web.BaseWebConst.*;
 import static com.bigtreetc.sample.r2dbc.base.web.BaseWebConst.SWAGGER_DOCS_URL;
 import static org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers.pathMatchers;
 
-import com.bigtreetc.sample.r2dbc.base.domain.model.BaseEntity;
 import com.bigtreetc.sample.r2dbc.base.util.MessageUtils;
 import com.bigtreetc.sample.r2dbc.base.web.controller.converter.IntegerValueEnumConverterFactory;
 import com.bigtreetc.sample.r2dbc.base.web.controller.converter.StringValueEnumConverterFactory;
 import com.bigtreetc.sample.r2dbc.base.web.filter.ElapsedMillisLoggingFilter;
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import io.swagger.v3.oas.annotations.info.Info;
-import io.swagger.v3.oas.models.Components;
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.security.SecurityRequirement;
-import io.swagger.v3.oas.models.security.SecurityScheme;
 import lombok.val;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
-import org.modelmapper.spi.PropertyInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -34,8 +26,12 @@ import org.springframework.web.reactive.result.method.annotation.ArgumentResolve
 import org.springframework.web.server.adapter.ForwardedHeaderTransformer;
 
 @Configuration
-@OpenAPIDefinition(info = @Info(title = "Spring Boot R2DBC Rest Sample", version = "0.0.1"))
 public class AppConfig implements WebFluxConfigurer {
+
+  @Autowired
+  public void initUtils(MessageSource messageSource) {
+    MessageUtils.init(messageSource);
+  }
 
   @Override
   public void addFormatters(FormatterRegistry registry) {
@@ -90,36 +86,7 @@ public class AppConfig implements WebFluxConfigurer {
   public ModelMapper modelMapper() {
     val modelMapper = new ModelMapper();
     val configuration = modelMapper.getConfiguration();
-    configuration.setPropertyCondition(
-        context -> {
-          // IDは上書きしないようにする
-          PropertyInfo propertyInfo = context.getMapping().getLastDestinationProperty();
-          return !(context.getParent().getDestination() instanceof BaseEntity
-              && propertyInfo.getName().equals("id"));
-        });
-    // 厳格にマッピングする
-    configuration.setMatchingStrategy(MatchingStrategies.STRICT);
+    configuration.setMatchingStrategy(MatchingStrategies.STRICT); // 厳格にマッピングする
     return modelMapper;
-  }
-
-  @Bean
-  public OpenAPI customizeOpenAPI() {
-    final String securitySchemeName = "bearerAuth";
-    return new OpenAPI()
-        .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
-        .components(
-            new Components()
-                .addSecuritySchemes(
-                    securitySchemeName,
-                    new SecurityScheme()
-                        .name(securitySchemeName)
-                        .type(SecurityScheme.Type.HTTP)
-                        .scheme("bearer")
-                        .bearerFormat("JWT")));
-  }
-
-  @Autowired
-  public void initUtils(MessageSource messageSource) {
-    MessageUtils.init(messageSource);
   }
 }

@@ -1,11 +1,8 @@
 package com.bigtreetc.sample.r2dbc.base.domain.model;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 public interface BaseEntity {
-
-  UUID getId();
 
   String getCreatedBy();
 

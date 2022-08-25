@@ -1,13 +1,11 @@
 package com.bigtreetc.sample.r2dbc.controller.system.uploadfiles;
 
-import com.bigtreetc.sample.r2dbc.base.domain.helper.FileHelper;
 import com.bigtreetc.sample.r2dbc.base.util.FileUtils;
 import com.bigtreetc.sample.r2dbc.base.web.controller.api.AbstractRestController;
 import com.bigtreetc.sample.r2dbc.base.web.controller.api.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.nio.file.Paths;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -32,8 +30,6 @@ public class UploadFileController extends AbstractRestController implements Init
       "${application.fileUploadLocation:#{systemProperties['java.io.tmpdir']}}") // 設定ファイルに定義されたアップロード先を取得する
   String fileUploadLocation;
 
-  @NonNull final FileHelper fileHelper;
-
   /**
    * ファイルの一覧を返します。
    *
@@ -47,7 +43,7 @@ public class UploadFileController extends AbstractRestController implements Init
             () -> {
               // ファイル名のリストを作成する
               val location = Paths.get(fileUploadLocation);
-              return fileHelper.listAllFiles(location).stream()
+              return FileUtils.listAllFiles(location).stream()
                   .map(path -> path.getFileName().toString())
                   .toList();
             })
@@ -64,7 +60,7 @@ public class UploadFileController extends AbstractRestController implements Init
   @PreAuthorize("hasAuthority('uploadFile')")
   @GetMapping(path = "/file/{filename:.+}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
   public Mono<ResponseEntity<Resource>> serveFile(@PathVariable String filename) {
-    return Mono.fromCallable(() -> fileHelper.loadFile(Paths.get(fileUploadLocation), filename))
+    return Mono.fromCallable(() -> FileUtils.loadFile(Paths.get(fileUploadLocation), filename))
         .map(resource -> toResponseEntity(resource, filename));
   }
 
@@ -80,7 +76,7 @@ public class UploadFileController extends AbstractRestController implements Init
       path = "/file/download/{filename:.+}",
       produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
   public Mono<ResponseEntity<Resource>> downloadFile(@PathVariable String filename) {
-    return Mono.fromCallable(() -> fileHelper.loadFile(Paths.get(fileUploadLocation), filename))
+    return Mono.fromCallable(() -> FileUtils.loadFile(Paths.get(fileUploadLocation), filename))
         .map(resource -> toResponseEntity(resource, filename, true));
   }
 
