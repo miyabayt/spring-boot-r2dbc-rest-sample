@@ -1,25 +1,24 @@
 package com.bigtreetc.sample.r2dbc.domain.service.users;
 
-import static com.bigtreetc.sample.r2dbc.base.util.ValidateUtils.isNotEmpty;
-import static org.springframework.data.relational.core.query.Criteria.where;
+import static com.bigtreetc.sample.r2dbc.base.util.DomaUtils.toSelectOptions;
 
+import com.bigtreetc.sample.r2dbc.base.domain.sql.DomaSqlFileSelectQueryBuilder;
 import com.bigtreetc.sample.r2dbc.base.exception.NoDataFoundException;
 import com.bigtreetc.sample.r2dbc.domain.model.user.User;
 import com.bigtreetc.sample.r2dbc.domain.model.user.UserCriteria;
 import com.bigtreetc.sample.r2dbc.domain.repository.users.UserRepository;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
+import org.seasar.doma.jdbc.dialect.MysqlDialect;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.r2dbc.convert.MappingR2dbcConverter;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
-import org.springframework.data.relational.core.query.Criteria;
-import org.springframework.data.relational.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -34,37 +33,42 @@ public class UserService {
 
   @NonNull final R2dbcEntityTemplate r2dbcEntityTemplate;
 
+  @NonNull final MappingR2dbcConverter converter;
+
   @NonNull final UserRepository userRepository;
 
   /**
    * ユーザを検索します。
    *
-   * @param user
+   * @param criteria
    * @param pageable
    * @return
    */
   @Transactional(readOnly = true) // 読み取りのみの場合は指定する
-  public Mono<Page<User>> findAll(final UserCriteria user, final Pageable pageable) {
-    Assert.notNull(user, "user must not be null");
+  public Mono<Page<User>> findAll(final UserCriteria criteria, final Pageable pageable) {
+    Assert.notNull(criteria, "criteria must not be null");
 
-    val criteria = new ArrayList<Criteria>();
-    if (isNotEmpty(user.getFirstName())) {
-      criteria.add(where("first_name").like("%%%s%%".formatted(user.getFirstName())));
-    }
-    if (isNotEmpty(user.getLastName())) {
-      criteria.add(where("last_name").like("%%%s%%".formatted(user.getLastName())));
-    }
-    if (isNotEmpty(user.getEmail())) {
-      criteria.add(where("email").like("%%%s%%".formatted(user.getEmail())));
-    }
+    val selectSql =
+        DomaSqlFileSelectQueryBuilder.builder()
+            .dialect(new MysqlDialect())
+            .sqlFilePath(
+                "META-INF/com/bigtreetc/sample/r2dbc/domain/service/system/userService/findAll.sql")
+            .addParameter("criteria", UserCriteria.class, criteria)
+            .options(toSelectOptions(pageable))
+            .build();
 
-    val query = Query.query(Criteria.from(criteria));
     return r2dbcEntityTemplate
-        .select(User.class)
-        .matching(query.with(pageable))
+        .getDatabaseClient()
+        .sql(selectSql)
+        .map((row, rowMetaData) -> converter.read(User.class, row, rowMetaData))
         .all()
         .collectList()
-        .zipWith(r2dbcEntityTemplate.count(query, User.class))
+        .zipWith(
+            r2dbcEntityTemplate
+                .getDatabaseClient()
+                .sql("SELECT FOUND_ROWS()")
+                .map((row, rowMetaData) -> row.get(0, Long.class))
+                .one())
         .map(tuple2 -> new PageImpl<>(tuple2.getT1(), pageable, tuple2.getT2()));
   }
 
