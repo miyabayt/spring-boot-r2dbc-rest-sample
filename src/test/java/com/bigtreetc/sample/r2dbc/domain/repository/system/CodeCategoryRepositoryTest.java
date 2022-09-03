@@ -7,11 +7,14 @@ import com.bigtreetc.sample.r2dbc.domain.model.system.CodeCategory;
 import lombok.val;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Example;
+import reactor.test.StepVerifier;
 
 @SpringBootTest
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class CodeCategoryRepositoryTest extends BaseTestContainerTest {
 
   @Autowired CodeCategoryRepository codeCategoryRepository;
@@ -30,9 +33,14 @@ class CodeCategoryRepositoryTest extends BaseTestContainerTest {
     codeCategory.setCategoryCode(expectedCategoryCode);
 
     val example = Example.of(codeCategory);
-    val found = codeCategoryRepository.findOne(example).block();
+    val found = codeCategoryRepository.findOne(example);
 
-    assertThat(found).isNotNull();
-    assertThat(found.getCategoryCode()).isEqualTo(expectedCategoryCode);
+    StepVerifier.create(found)
+        .assertNext(
+            cc -> {
+              assertThat(cc).isNotNull();
+              assertThat(cc.getCategoryCode()).isEqualTo(expectedCategoryCode);
+            })
+        .verifyComplete();
   }
 }
