@@ -86,7 +86,8 @@ public class AppConfig implements WebFluxConfigurer {
   public ModelMapper modelMapper() {
     val modelMapper = new ModelMapper();
     val configuration = modelMapper.getConfiguration();
-    configuration.setMatchingStrategy(MatchingStrategies.STRICT); // 厳格にマッピングする
+    configuration.setMatchingStrategy(MatchingStrategies.STRICT);
+    configuration.setFullTypeMatchingRequired(true);
     return modelMapper;
   }
 }
