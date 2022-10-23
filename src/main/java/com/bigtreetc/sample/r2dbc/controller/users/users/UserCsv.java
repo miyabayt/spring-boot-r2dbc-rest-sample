@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @JsonIgnoreProperties(ignoreUnknown = true) // 定義されていないプロパティを無視してマッピングする
-@JsonPropertyOrder({"ユーザID", "苗字", "名前", "メールアドレス", "電話番号1", "郵便番号", "住所1"}) // CSVのヘッダ順
+@JsonPropertyOrder({"ユーザID", "姓", "名", "メールアドレス", "電話番号", "郵便番号", "住所"}) // CSVのヘッダ順
 @Getter
 @Setter
 public class UserCsv implements Serializable {
@@ -24,10 +24,10 @@ public class UserCsv implements Serializable {
   @JsonIgnore // CSVに出力しない
   String password;
 
-  @JsonProperty("名前")
+  @JsonProperty("名")
   String firstName;
 
-  @JsonProperty("苗字")
+  @JsonProperty("姓")
   String lastName;
 
   @JsonProperty("メールアドレス")

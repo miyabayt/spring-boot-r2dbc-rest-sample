@@ -3,7 +3,7 @@ package com.bigtreetc.sample.r2dbc.controller.auth;
 import com.bigtreetc.sample.r2dbc.base.exception.NoDataFoundException;
 import com.bigtreetc.sample.r2dbc.base.web.controller.api.AbstractRestController;
 import com.bigtreetc.sample.r2dbc.base.web.controller.api.response.ApiResponse;
-import com.bigtreetc.sample.r2dbc.domain.repository.system.StaffRepository;
+import com.bigtreetc.sample.r2dbc.domain.repository.StaffRepository;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.UUID;
 import lombok.NonNull;

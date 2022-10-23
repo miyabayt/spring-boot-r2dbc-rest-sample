@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS code_categories(
   id VARCHAR(36) NOT NULL COMMENT 'コード分類ID'
-  , category_code VARCHAR(50) NOT NULL COMMENT 'コード分類コード'
-  , category_name VARCHAR(50) NOT NULL COMMENT 'コード分類名'
+  , category_code VARCHAR(50) NOT NULL COMMENT '分類コード'
+  , category_name VARCHAR(50) NOT NULL COMMENT '分類名'
   , created_by VARCHAR(50) NOT NULL COMMENT '登録者'
   , created_at DATETIME NOT NULL COMMENT '登録日時'
   , updated_by VARCHAR(50) DEFAULT NULL COMMENT '更新者'
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS code_categories(
 
 CREATE TABLE IF NOT EXISTS codes(
   id VARCHAR(36) NOT NULL COMMENT 'コードID'
-  , category_code VARCHAR(50) NOT NULL COMMENT 'コード分類コード'
+  , category_code VARCHAR(50) NOT NULL COMMENT '分類コード'
   , code_value VARCHAR(50) NOT NULL COMMENT 'コード値'
   , code_name VARCHAR(100) NOT NULL COMMENT 'コード名'
   , code_alias VARCHAR(100) DEFAULT NULL COMMENT 'コードエイリアス'
@@ -96,8 +96,8 @@ CREATE TABLE IF NOT EXISTS role_permissions(
 
 CREATE TABLE IF NOT EXISTS staffs(
   id VARCHAR(36) NOT NULL COMMENT '担当者ID'
-  , first_name VARCHAR(40) NOT NULL COMMENT '名前'
-  , last_name VARCHAR(40) NOT NULL COMMENT '苗字'
+  , first_name VARCHAR(40) NOT NULL COMMENT '名'
+  , last_name VARCHAR(40) NOT NULL COMMENT '姓'
   , email VARCHAR(100) DEFAULT NULL COMMENT 'メールアドレス'
   , password VARCHAR(100) DEFAULT NULL COMMENT 'パスワード'
   , tel VARCHAR(20) DEFAULT NULL COMMENT '電話番号'
@@ -115,8 +115,8 @@ CREATE TABLE IF NOT EXISTS staffs(
 
 CREATE TABLE IF NOT EXISTS users(
   id VARCHAR(36) NOT NULL COMMENT 'ユーザID'
-  , first_name VARCHAR(50) NOT NULL COMMENT '名前'
-  , last_name VARCHAR(50) NOT NULL COMMENT '苗字'
+  , first_name VARCHAR(50) NOT NULL COMMENT '名'
+  , last_name VARCHAR(50) NOT NULL COMMENT '姓'
   , email VARCHAR(100) DEFAULT NULL COMMENT 'メールアドレス'
   , password VARCHAR(100) DEFAULT NULL COMMENT 'パスワード'
   , tel VARCHAR(20) DEFAULT NULL COMMENT '電話番号'

@@ -1,13 +1,9 @@
-package com.bigtreetc.sample.r2dbc.domain.service.system;
-
-import static com.bigtreetc.sample.r2dbc.base.util.ValidateUtils.isNotEmpty;
-import static org.springframework.data.relational.core.query.Criteria.where;
+package com.bigtreetc.sample.r2dbc.domain.service;
 
 import com.bigtreetc.sample.r2dbc.base.exception.NoDataFoundException;
 import com.bigtreetc.sample.r2dbc.domain.model.system.CodeCategory;
 import com.bigtreetc.sample.r2dbc.domain.model.system.CodeCategoryCriteria;
-import com.bigtreetc.sample.r2dbc.domain.repository.system.CodeCategoryRepository;
-import java.util.ArrayList;
+import com.bigtreetc.sample.r2dbc.domain.repository.CodeCategoryRepository;
 import java.util.List;
 import java.util.UUID;
 import lombok.NonNull;
@@ -15,29 +11,23 @@ import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
-import org.springframework.data.relational.core.query.Criteria;
-import org.springframework.data.relational.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** コード分類サービス */
+/** コード分類マスタサービス */
 @RequiredArgsConstructor
 @Service
 @Transactional(rollbackFor = Throwable.class)
 public class CodeCategoryService {
 
-  @NonNull final R2dbcEntityTemplate r2dbcEntityTemplate;
-
   @NonNull final CodeCategoryRepository codeCategoryRepository;
 
   /**
-   * コード分類を検索します。
+   * コード分類マスタを検索します。
    *
    * @param codeCategory
    * @param pageable
@@ -47,27 +37,12 @@ public class CodeCategoryService {
   public Mono<Page<CodeCategory>> findAll(
       final CodeCategoryCriteria codeCategory, final Pageable pageable) {
     Assert.notNull(codeCategory, "codeCategory must not be null");
-
-    val criteria = new ArrayList<Criteria>();
-    if (isNotEmpty(codeCategory.getCategoryCode())) {
-      criteria.add(where("category_code").is(codeCategory.getCategoryCode()));
-    }
-    if (isNotEmpty(codeCategory.getCategoryName())) {
-      criteria.add(where("category_name").like("%%%s%%".formatted(codeCategory.getCategoryName())));
-    }
-
-    val query = Query.query(Criteria.from(criteria));
-    return r2dbcEntityTemplate
-        .select(CodeCategory.class)
-        .matching(query.with(pageable))
-        .all()
-        .collectList()
-        .zipWith(r2dbcEntityTemplate.count(query, CodeCategory.class))
-        .map(tuple2 -> new PageImpl<>(tuple2.getT1(), pageable, tuple2.getT2()));
+    Assert.notNull(pageable, "pageable must not be null");
+    return codeCategoryRepository.findAll(Example.of(codeCategory), pageable);
   }
 
   /**
-   * コード分類を取得します。
+   * コード分類マスタを取得します。
    *
    * @return
    */
@@ -78,7 +53,7 @@ public class CodeCategoryService {
   }
 
   /**
-   * コード分類を取得します。
+   * コード分類マスタを取得します。
    *
    * @param id
    * @return

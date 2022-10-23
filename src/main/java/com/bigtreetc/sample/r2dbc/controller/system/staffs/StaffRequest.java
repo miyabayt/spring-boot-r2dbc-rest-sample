@@ -15,10 +15,10 @@ public class StaffRequest {
 
   UUID id;
 
-  // 名前
+  // 名
   @NotEmpty String firstName;
 
-  // 苗字
+  // 姓
   @NotEmpty String lastName;
 
   @NotEmpty String password;

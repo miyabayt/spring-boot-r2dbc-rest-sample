@@ -26,10 +26,10 @@ public class User extends BaseEntityImpl implements Persistable<UUID> {
   // ハッシュ化されたパスワード
   @JsonIgnore String password;
 
-  // 名前
+  // 名
   String firstName;
 
-  // 苗字
+  // 姓
   String lastName;
 
   // メールアドレス

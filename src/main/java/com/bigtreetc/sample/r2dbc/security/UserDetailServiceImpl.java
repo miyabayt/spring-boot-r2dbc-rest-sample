@@ -2,9 +2,9 @@ package com.bigtreetc.sample.r2dbc.security;
 
 import com.bigtreetc.sample.r2dbc.domain.model.system.RolePermission;
 import com.bigtreetc.sample.r2dbc.domain.model.system.StaffRole;
-import com.bigtreetc.sample.r2dbc.domain.repository.system.RolePermissionRepository;
-import com.bigtreetc.sample.r2dbc.domain.repository.system.StaffRepository;
-import com.bigtreetc.sample.r2dbc.domain.repository.system.StaffRoleRepository;
+import com.bigtreetc.sample.r2dbc.domain.repository.RolePermissionRepository;
+import com.bigtreetc.sample.r2dbc.domain.repository.StaffRepository;
+import com.bigtreetc.sample.r2dbc.domain.repository.StaffRoleRepository;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;

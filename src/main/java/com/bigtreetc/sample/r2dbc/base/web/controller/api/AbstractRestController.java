@@ -17,7 +17,7 @@ import org.springframework.http.ResponseEntity;
 import reactor.core.publisher.Mono;
 
 @Slf4j
-public class AbstractRestController {
+public abstract class AbstractRestController {
 
   @Autowired protected ModelMapper modelMapper;
 

@@ -8,8 +8,8 @@ import com.bigtreetc.sample.r2dbc.base.web.controller.api.request.Requests;
 import com.bigtreetc.sample.r2dbc.base.web.controller.api.response.ApiResponse;
 import com.bigtreetc.sample.r2dbc.domain.model.system.Code;
 import com.bigtreetc.sample.r2dbc.domain.model.system.CodeCriteria;
-import com.bigtreetc.sample.r2dbc.domain.service.system.CodeCategoryService;
-import com.bigtreetc.sample.r2dbc.domain.service.system.CodeService;
+import com.bigtreetc.sample.r2dbc.domain.service.CodeCategoryService;
+import com.bigtreetc.sample.r2dbc.domain.service.CodeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -31,7 +31,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
-@Tag(name = "コード")
+@Tag(name = "コード定義マスタ")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(path = "/api/system", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -50,12 +50,12 @@ public class CodeController extends AbstractRestController {
   }
 
   /**
-   * コードを登録します。
+   * コード定義を登録します。
    *
    * @param requestMono
    * @return
    */
-  @Operation(summary = "コード登録", description = "コードを登録します。")
+  @Operation(summary = "コード定義登録", description = "コード定義を登録します。")
   @PreAuthorize("hasAuthority('code:save')")
   @PostMapping("/code")
   public Mono<ApiResponse> create(@Validated @RequestBody Mono<CodeRequest> requestMono) {
@@ -66,12 +66,12 @@ public class CodeController extends AbstractRestController {
   }
 
   /**
-   * コードを一括登録します。
+   * コード定義を一括登録します。
    *
    * @param requestsMono
    * @return
    */
-  @Operation(summary = "コード一括登録", description = "コードを一括登録します。")
+  @Operation(summary = "コード定義一括登録", description = "コード定義を一括登録します。")
   @PreAuthorize("hasAuthority('code:save')")
   @PostMapping(value = "/codes")
   public Mono<ApiResponse> createAll(
@@ -83,14 +83,14 @@ public class CodeController extends AbstractRestController {
   }
 
   /**
-   * コードを検索します。
+   * コード定義を検索します。
    *
    * @param request
    * @param pageable
    * @return
    */
   @PageableAsQueryParam
-  @Operation(summary = "コード検索", description = "コードを検索します。")
+  @Operation(summary = "コード定義検索", description = "コードを検索します。")
   @PreAuthorize("hasAuthority('code:read')")
   @GetMapping("/codes")
   public Mono<ApiResponse> index(

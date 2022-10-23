@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.bigtreetc.sample.r2dbc.BaseTestContainerTest;
 import com.bigtreetc.sample.r2dbc.domain.model.system.CodeCategory;
+import com.bigtreetc.sample.r2dbc.domain.repository.CodeCategoryRepository;
 import lombok.val;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

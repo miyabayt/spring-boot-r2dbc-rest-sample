@@ -1,13 +1,13 @@
-package com.bigtreetc.sample.r2dbc.domain.service.system;
+package com.bigtreetc.sample.r2dbc.domain.service;
 
 import static com.bigtreetc.sample.r2dbc.base.util.ValidateUtils.isNotEmpty;
 import static org.springframework.data.relational.core.query.Criteria.where;
 
 import com.bigtreetc.sample.r2dbc.base.exception.NoDataFoundException;
 import com.bigtreetc.sample.r2dbc.domain.model.system.*;
-import com.bigtreetc.sample.r2dbc.domain.repository.system.PermissionRepository;
-import com.bigtreetc.sample.r2dbc.domain.repository.system.RolePermissionRepository;
-import com.bigtreetc.sample.r2dbc.domain.repository.system.RoleRepository;
+import com.bigtreetc.sample.r2dbc.domain.repository.PermissionRepository;
+import com.bigtreetc.sample.r2dbc.domain.repository.RolePermissionRepository;
+import com.bigtreetc.sample.r2dbc.domain.repository.RoleRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -51,6 +51,7 @@ public class RoleService {
   @Transactional(readOnly = true) // 読み取りのみの場合は指定する
   public Mono<Page<Role>> findAll(RoleCriteria role, Pageable pageable) {
     Assert.notNull(role, "role must not be null");
+    Assert.notNull(pageable, "pageable must not be null");
 
     val criteria = new ArrayList<Criteria>();
     if (isNotEmpty(role.getRoleCode())) {

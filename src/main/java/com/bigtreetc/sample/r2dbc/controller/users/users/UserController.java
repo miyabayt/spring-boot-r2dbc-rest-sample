@@ -9,7 +9,7 @@ import com.bigtreetc.sample.r2dbc.base.web.controller.api.request.Requests;
 import com.bigtreetc.sample.r2dbc.base.web.controller.api.response.ApiResponse;
 import com.bigtreetc.sample.r2dbc.domain.model.user.User;
 import com.bigtreetc.sample.r2dbc.domain.model.user.UserCriteria;
-import com.bigtreetc.sample.r2dbc.domain.service.users.UserService;
+import com.bigtreetc.sample.r2dbc.domain.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;

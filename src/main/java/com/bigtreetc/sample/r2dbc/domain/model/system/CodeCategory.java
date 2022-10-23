@@ -18,10 +18,10 @@ public class CodeCategory extends BaseEntityImpl implements Persistable<UUID> {
   // コード分類ID
   @Id UUID id;
 
-  // カテゴリコード
+  // 分類コード
   String categoryCode;
 
-  // カテゴリ名
+  // 分類名
   String categoryName;
 
   @Override

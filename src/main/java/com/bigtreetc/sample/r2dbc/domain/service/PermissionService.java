@@ -1,4 +1,4 @@
-package com.bigtreetc.sample.r2dbc.domain.service.system;
+package com.bigtreetc.sample.r2dbc.domain.service;
 
 import static com.bigtreetc.sample.r2dbc.base.util.ValidateUtils.isNotEmpty;
 import static org.springframework.data.relational.core.query.Criteria.where;
@@ -6,7 +6,7 @@ import static org.springframework.data.relational.core.query.Criteria.where;
 import com.bigtreetc.sample.r2dbc.base.exception.NoDataFoundException;
 import com.bigtreetc.sample.r2dbc.domain.model.system.Permission;
 import com.bigtreetc.sample.r2dbc.domain.model.system.PermissionCriteria;
-import com.bigtreetc.sample.r2dbc.domain.repository.system.PermissionRepository;
+import com.bigtreetc.sample.r2dbc.domain.repository.PermissionRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -46,6 +46,7 @@ public class PermissionService {
   @Transactional(readOnly = true) // 読み取りのみの場合は指定する
   public Mono<Page<Permission>> findAll(Permission permission, Pageable pageable) {
     Assert.notNull(permission, "permission must not be null");
+    Assert.notNull(pageable, "pageable must not be null");
 
     val criteria = new ArrayList<Criteria>();
     if (isNotEmpty(permission.getPermissionCode())) {

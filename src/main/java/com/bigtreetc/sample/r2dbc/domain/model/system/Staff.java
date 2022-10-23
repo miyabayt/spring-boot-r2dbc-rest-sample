@@ -23,10 +23,10 @@ public class Staff extends BaseEntityImpl implements Persistable<UUID> {
 
   @JsonIgnore String password;
 
-  // 名前
+  // 名
   String firstName;
 
-  // 苗字
+  // 姓
   String lastName;
 
   // メールアドレス

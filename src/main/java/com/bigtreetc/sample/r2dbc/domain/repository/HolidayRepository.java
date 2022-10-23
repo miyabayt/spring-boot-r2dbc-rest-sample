@@ -1,4 +1,4 @@
-package com.bigtreetc.sample.r2dbc.domain.repository.system;
+package com.bigtreetc.sample.r2dbc.domain.repository;
 
 import com.bigtreetc.sample.r2dbc.domain.model.system.Holiday;
 import java.util.UUID;
@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 /** 祝日リポジトリ */
 @Repository
 public interface HolidayRepository
-    extends ReactiveSortingRepository<Holiday, UUID>, ReactiveQueryByExampleExecutor<Holiday> {}
+    extends ReactiveSortingRepository<Holiday, UUID>,
+        ReactiveQueryByExampleExecutor<Holiday>,
+        HolidayQueryRepository {}

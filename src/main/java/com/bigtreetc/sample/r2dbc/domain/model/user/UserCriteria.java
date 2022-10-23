@@ -10,6 +10,6 @@ public class UserCriteria extends User {
 
   private static final long serialVersionUID = -1L;
 
-  // 顧客シーケンスID（複数指定）
+  // ユーザID（複数指定）
   List<String> ids;
 }

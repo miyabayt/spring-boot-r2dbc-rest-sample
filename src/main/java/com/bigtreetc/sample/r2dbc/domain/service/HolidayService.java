@@ -1,13 +1,9 @@
-package com.bigtreetc.sample.r2dbc.domain.service.system;
-
-import static com.bigtreetc.sample.r2dbc.base.util.ValidateUtils.isNotEmpty;
-import static org.springframework.data.relational.core.query.Criteria.where;
+package com.bigtreetc.sample.r2dbc.domain.service;
 
 import com.bigtreetc.sample.r2dbc.base.exception.NoDataFoundException;
 import com.bigtreetc.sample.r2dbc.domain.model.system.Holiday;
 import com.bigtreetc.sample.r2dbc.domain.model.system.HolidayCriteria;
-import com.bigtreetc.sample.r2dbc.domain.repository.system.HolidayRepository;
-import java.util.ArrayList;
+import com.bigtreetc.sample.r2dbc.domain.repository.HolidayRepository;
 import java.util.List;
 import java.util.UUID;
 import lombok.NonNull;
@@ -15,24 +11,18 @@ import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
-import org.springframework.data.relational.core.query.Criteria;
-import org.springframework.data.relational.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** 祝日サービス */
+/** 祝日マスタサービス */
 @RequiredArgsConstructor
 @Service
 @Transactional(rollbackFor = Throwable.class)
 public class HolidayService {
-
-  @NonNull final R2dbcEntityTemplate r2dbcEntityTemplate;
 
   @NonNull final HolidayRepository holidayRepository;
 
@@ -46,24 +36,8 @@ public class HolidayService {
   @Transactional(readOnly = true) // 読み取りのみの場合は指定する
   public Mono<Page<Holiday>> findAll(HolidayCriteria holiday, Pageable pageable) {
     Assert.notNull(holiday, "holiday must not be null");
-
-    val criteria = new ArrayList<Criteria>();
-    if (holiday.getHolidayDate() != null) {
-      criteria.add(
-          where("holiday_date").between(holiday.getHolidayDateFrom(), holiday.getHolidayDateTo()));
-    }
-    if (isNotEmpty(holiday.getHolidayName())) {
-      criteria.add(where("holiday_name").like("%%%s%%".formatted(holiday.getHolidayName())));
-    }
-
-    val query = Query.query(Criteria.from(criteria));
-    return r2dbcEntityTemplate
-        .select(Holiday.class)
-        .matching(query.with(pageable))
-        .all()
-        .collectList()
-        .zipWith(r2dbcEntityTemplate.count(query, Holiday.class))
-        .map(tuple2 -> new PageImpl<>(tuple2.getT1(), pageable, tuple2.getT2()));
+    Assert.notNull(pageable, "pageable must not be null");
+    return holidayRepository.findAll(Example.of(holiday), pageable);
   }
 
   /**

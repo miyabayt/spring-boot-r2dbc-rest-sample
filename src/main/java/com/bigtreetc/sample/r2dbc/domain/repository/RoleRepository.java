@@ -1,4 +1,4 @@
-package com.bigtreetc.sample.r2dbc.domain.repository.system;
+package com.bigtreetc.sample.r2dbc.domain.repository;
 
 import com.bigtreetc.sample.r2dbc.domain.model.system.Role;
 import java.util.*;

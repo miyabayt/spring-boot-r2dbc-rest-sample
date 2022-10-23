@@ -1,4 +1,4 @@
-package com.bigtreetc.sample.r2dbc.domain.repository.system;
+package com.bigtreetc.sample.r2dbc.domain.repository;
 
 import com.bigtreetc.sample.r2dbc.domain.model.system.Staff;
 import java.util.UUID;
@@ -9,7 +9,9 @@ import reactor.core.publisher.Mono;
 
 @Repository
 public interface StaffRepository
-    extends ReactiveSortingRepository<Staff, UUID>, ReactiveQueryByExampleExecutor<Staff> {
+    extends ReactiveSortingRepository<Staff, UUID>,
+        ReactiveQueryByExampleExecutor<Staff>,
+        StaffQueryRepository {
 
   Mono<Staff> findByEmail(String email);
 }

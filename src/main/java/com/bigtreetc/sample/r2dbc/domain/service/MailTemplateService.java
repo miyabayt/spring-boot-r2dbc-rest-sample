@@ -1,4 +1,4 @@
-package com.bigtreetc.sample.r2dbc.domain.service.system;
+package com.bigtreetc.sample.r2dbc.domain.service;
 
 import static com.bigtreetc.sample.r2dbc.base.util.ValidateUtils.isNotEmpty;
 import static org.springframework.data.relational.core.query.Criteria.where;
@@ -6,7 +6,7 @@ import static org.springframework.data.relational.core.query.Criteria.where;
 import com.bigtreetc.sample.r2dbc.base.exception.NoDataFoundException;
 import com.bigtreetc.sample.r2dbc.domain.model.system.MailTemplate;
 import com.bigtreetc.sample.r2dbc.domain.model.system.MailTemplateCriteria;
-import com.bigtreetc.sample.r2dbc.domain.repository.system.MailTemplateRepository;
+import com.bigtreetc.sample.r2dbc.domain.repository.MailTemplateRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -44,6 +44,7 @@ public class MailTemplateService {
   @Transactional(readOnly = true) // 読み取りのみの場合は指定する
   public Mono<Page<MailTemplate>> findAll(MailTemplateCriteria mailTemplate, Pageable pageable) {
     Assert.notNull(mailTemplate, "mailTemplate must not be null");
+    Assert.notNull(pageable, "pageable must not be null");
 
     val criteria = new ArrayList<Criteria>();
     if (isNotEmpty(mailTemplate.getCategoryCode())) {
