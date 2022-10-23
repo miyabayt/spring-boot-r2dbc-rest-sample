@@ -1,6 +1,6 @@
 package com.bigtreetc.sample.r2dbc.domain.repository;
 
-import com.bigtreetc.sample.r2dbc.domain.model.system.RolePermission;
+import com.bigtreetc.sample.r2dbc.domain.model.RolePermission;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.data.repository.query.ReactiveQueryByExampleExecutor;

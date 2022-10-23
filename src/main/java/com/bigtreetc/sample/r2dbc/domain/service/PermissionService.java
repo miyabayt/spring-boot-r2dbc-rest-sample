@@ -4,8 +4,8 @@ import static com.bigtreetc.sample.r2dbc.base.util.ValidateUtils.isNotEmpty;
 import static org.springframework.data.relational.core.query.Criteria.where;
 
 import com.bigtreetc.sample.r2dbc.base.exception.NoDataFoundException;
-import com.bigtreetc.sample.r2dbc.domain.model.system.Permission;
-import com.bigtreetc.sample.r2dbc.domain.model.system.PermissionCriteria;
+import com.bigtreetc.sample.r2dbc.domain.model.Permission;
+import com.bigtreetc.sample.r2dbc.domain.model.PermissionCriteria;
 import com.bigtreetc.sample.r2dbc.domain.repository.PermissionRepository;
 import java.util.ArrayList;
 import java.util.List;

@@ -3,8 +3,8 @@ package com.bigtreetc.sample.r2dbc.domain.repository;
 import static com.bigtreetc.sample.r2dbc.base.util.DomaUtils.toSelectOptions;
 
 import com.bigtreetc.sample.r2dbc.base.domain.sql.DomaSqlFileSelectQueryBuilder;
-import com.bigtreetc.sample.r2dbc.domain.model.user.User;
-import com.bigtreetc.sample.r2dbc.domain.model.user.UserCriteria;
+import com.bigtreetc.sample.r2dbc.domain.model.User;
+import com.bigtreetc.sample.r2dbc.domain.model.UserCriteria;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.val;

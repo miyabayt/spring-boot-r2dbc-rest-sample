@@ -1,8 +1,8 @@
 package com.bigtreetc.sample.r2dbc.domain.service;
 
 import com.bigtreetc.sample.r2dbc.base.exception.NoDataFoundException;
-import com.bigtreetc.sample.r2dbc.domain.model.system.Holiday;
-import com.bigtreetc.sample.r2dbc.domain.model.system.HolidayCriteria;
+import com.bigtreetc.sample.r2dbc.domain.model.Holiday;
+import com.bigtreetc.sample.r2dbc.domain.model.HolidayCriteria;
 import com.bigtreetc.sample.r2dbc.domain.repository.HolidayRepository;
 import java.util.List;
 import java.util.UUID;

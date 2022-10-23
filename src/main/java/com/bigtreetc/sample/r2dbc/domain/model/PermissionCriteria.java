@@ -1,4 +1,4 @@
-package com.bigtreetc.sample.r2dbc.domain.model.system;
+package com.bigtreetc.sample.r2dbc.domain.model;
 
 import lombok.Getter;
 import lombok.Setter;

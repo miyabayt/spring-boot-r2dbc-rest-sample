@@ -3,9 +3,9 @@ package com.bigtreetc.sample.r2dbc.domain.service;
 import static com.bigtreetc.sample.r2dbc.base.util.ValidateUtils.isEquals;
 
 import com.bigtreetc.sample.r2dbc.base.exception.NoDataFoundException;
-import com.bigtreetc.sample.r2dbc.domain.model.system.Code;
-import com.bigtreetc.sample.r2dbc.domain.model.system.CodeCategory;
-import com.bigtreetc.sample.r2dbc.domain.model.system.CodeCriteria;
+import com.bigtreetc.sample.r2dbc.domain.model.Code;
+import com.bigtreetc.sample.r2dbc.domain.model.CodeCategory;
+import com.bigtreetc.sample.r2dbc.domain.model.CodeCriteria;
 import com.bigtreetc.sample.r2dbc.domain.repository.CodeCategoryRepository;
 import com.bigtreetc.sample.r2dbc.domain.repository.CodeRepository;
 import java.util.List;

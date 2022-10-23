@@ -1,7 +1,7 @@
 package com.bigtreetc.sample.r2dbc.domain.repository;
 
-import com.bigtreetc.sample.r2dbc.domain.model.system.CodeCategory;
-import com.bigtreetc.sample.r2dbc.domain.model.system.CodeCategoryCriteria;
+import com.bigtreetc.sample.r2dbc.domain.model.CodeCategory;
+import com.bigtreetc.sample.r2dbc.domain.model.CodeCategoryCriteria;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

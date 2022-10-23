@@ -1,4 +1,4 @@
-package com.bigtreetc.sample.r2dbc.domain.model.system;
+package com.bigtreetc.sample.r2dbc.domain.model;
 
 import com.bigtreetc.sample.r2dbc.base.domain.model.BaseEntityImpl;
 import java.time.LocalDate;

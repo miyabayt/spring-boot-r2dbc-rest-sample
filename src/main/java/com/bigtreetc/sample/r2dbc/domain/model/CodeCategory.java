@@ -1,4 +1,4 @@
-package com.bigtreetc.sample.r2dbc.domain.model.system;
+package com.bigtreetc.sample.r2dbc.domain.model;
 
 import com.bigtreetc.sample.r2dbc.base.domain.model.BaseEntityImpl;
 import java.util.UUID;
@@ -10,21 +10,19 @@ import org.springframework.data.relational.core.mapping.Table;
 
 @Getter
 @Setter
-@Table("role_permissions")
-public class RolePermission extends BaseEntityImpl implements Persistable<UUID> {
+@Table("code_categories")
+public class CodeCategory extends BaseEntityImpl implements Persistable<UUID> {
 
   private static final long serialVersionUID = -1L;
 
+  // コード分類ID
   @Id UUID id;
 
-  // ロールコード
-  String roleCode;
+  // 分類コード
+  String categoryCode;
 
-  // 権限コード
-  String permissionCode;
-
-  // 有効
-  Boolean isEnabled;
+  // 分類名
+  String categoryName;
 
   @Override
   public boolean isNew() {

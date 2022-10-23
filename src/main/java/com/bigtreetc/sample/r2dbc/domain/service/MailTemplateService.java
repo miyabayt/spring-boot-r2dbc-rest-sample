@@ -4,8 +4,8 @@ import static com.bigtreetc.sample.r2dbc.base.util.ValidateUtils.isNotEmpty;
 import static org.springframework.data.relational.core.query.Criteria.where;
 
 import com.bigtreetc.sample.r2dbc.base.exception.NoDataFoundException;
-import com.bigtreetc.sample.r2dbc.domain.model.system.MailTemplate;
-import com.bigtreetc.sample.r2dbc.domain.model.system.MailTemplateCriteria;
+import com.bigtreetc.sample.r2dbc.domain.model.MailTemplate;
+import com.bigtreetc.sample.r2dbc.domain.model.MailTemplateCriteria;
 import com.bigtreetc.sample.r2dbc.domain.repository.MailTemplateRepository;
 import java.util.ArrayList;
 import java.util.List;

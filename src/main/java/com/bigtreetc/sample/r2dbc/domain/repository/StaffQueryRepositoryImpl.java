@@ -3,8 +3,8 @@ package com.bigtreetc.sample.r2dbc.domain.repository;
 import static com.bigtreetc.sample.r2dbc.base.util.ValidateUtils.isNotEmpty;
 import static org.springframework.data.relational.core.query.Criteria.where;
 
-import com.bigtreetc.sample.r2dbc.domain.model.system.Staff;
-import com.bigtreetc.sample.r2dbc.domain.model.system.StaffCriteria;
+import com.bigtreetc.sample.r2dbc.domain.model.Staff;
+import com.bigtreetc.sample.r2dbc.domain.model.StaffCriteria;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.NonNull;

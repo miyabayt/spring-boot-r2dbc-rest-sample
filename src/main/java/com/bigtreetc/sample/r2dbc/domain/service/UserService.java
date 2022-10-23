@@ -1,8 +1,8 @@
 package com.bigtreetc.sample.r2dbc.domain.service;
 
 import com.bigtreetc.sample.r2dbc.base.exception.NoDataFoundException;
-import com.bigtreetc.sample.r2dbc.domain.model.user.User;
-import com.bigtreetc.sample.r2dbc.domain.model.user.UserCriteria;
+import com.bigtreetc.sample.r2dbc.domain.model.User;
+import com.bigtreetc.sample.r2dbc.domain.model.UserCriteria;
 import com.bigtreetc.sample.r2dbc.domain.repository.UserRepository;
 import java.util.List;
 import java.util.UUID;

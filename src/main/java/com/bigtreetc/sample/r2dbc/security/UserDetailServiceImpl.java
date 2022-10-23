@@ -1,7 +1,7 @@
 package com.bigtreetc.sample.r2dbc.security;
 
-import com.bigtreetc.sample.r2dbc.domain.model.system.RolePermission;
-import com.bigtreetc.sample.r2dbc.domain.model.system.StaffRole;
+import com.bigtreetc.sample.r2dbc.domain.model.RolePermission;
+import com.bigtreetc.sample.r2dbc.domain.model.StaffRole;
 import com.bigtreetc.sample.r2dbc.domain.repository.RolePermissionRepository;
 import com.bigtreetc.sample.r2dbc.domain.repository.StaffRepository;
 import com.bigtreetc.sample.r2dbc.domain.repository.StaffRoleRepository;

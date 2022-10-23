@@ -1,8 +1,8 @@
 package com.bigtreetc.sample.r2dbc.domain.service;
 
 import com.bigtreetc.sample.r2dbc.base.exception.NoDataFoundException;
-import com.bigtreetc.sample.r2dbc.domain.model.system.CodeCategory;
-import com.bigtreetc.sample.r2dbc.domain.model.system.CodeCategoryCriteria;
+import com.bigtreetc.sample.r2dbc.domain.model.CodeCategory;
+import com.bigtreetc.sample.r2dbc.domain.model.CodeCategoryCriteria;
 import com.bigtreetc.sample.r2dbc.domain.repository.CodeCategoryRepository;
 import java.util.List;
 import java.util.UUID;

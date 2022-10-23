@@ -1,7 +1,7 @@
 package com.bigtreetc.sample.r2dbc.domain.repository;
 
-import com.bigtreetc.sample.r2dbc.domain.model.system.Staff;
-import com.bigtreetc.sample.r2dbc.domain.model.system.StaffCriteria;
+import com.bigtreetc.sample.r2dbc.domain.model.Staff;
+import com.bigtreetc.sample.r2dbc.domain.model.StaffCriteria;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

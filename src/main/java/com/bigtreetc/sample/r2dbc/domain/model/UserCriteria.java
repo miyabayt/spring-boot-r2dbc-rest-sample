@@ -1,4 +1,4 @@
-package com.bigtreetc.sample.r2dbc.domain.model.user;
+package com.bigtreetc.sample.r2dbc.domain.model;
 
 import java.util.List;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.bigtreetc.sample.r2dbc.domain.model.system;
+package com.bigtreetc.sample.r2dbc.domain.model;
 
 import com.bigtreetc.sample.r2dbc.base.domain.model.BaseEntityImpl;
 import java.util.UUID;
@@ -10,24 +10,19 @@ import org.springframework.data.relational.core.mapping.Table;
 
 @Getter
 @Setter
-@Table("mail_templates")
-public class MailTemplate extends BaseEntityImpl implements Persistable<UUID> {
+@Table("permissions")
+public class Permission extends BaseEntityImpl implements Persistable<UUID> {
 
   private static final long serialVersionUID = -1L;
 
+  // 権限ID
   @Id UUID id;
 
-  // カテゴリコード
-  String categoryCode;
+  // 権限コード
+  String permissionCode;
 
-  // メールテンプレートコード
-  String templateCode;
-
-  // メールタイトル
-  String subject;
-
-  // メール本文
-  String templateBody;
+  // 権限名
+  String permissionName;
 
   @Override
   public boolean isNew() {
