@@ -84,7 +84,7 @@ dependencies {
     testImplementation "org.springframework.security:spring-security-test"
     testImplementation "io.projectreactor:reactor-test"
     testImplementation "com.h2database:h2"
-    testImplementation "org.testcontainers:junit-jupiter:1.17.3"
+    testImplementation "org.testcontainers:junit-jupiter:1.17.6"
     testImplementation "org.testcontainers:r2dbc:1.17.3"
     testImplementation "org.testcontainers:mysql:1.17.3"
     testImplementation "io.r2dbc:r2dbc-h2"
