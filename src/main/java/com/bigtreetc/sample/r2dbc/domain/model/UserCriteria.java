@@ -12,4 +12,7 @@ public class UserCriteria extends User {
 
   // ユーザID（複数指定）
   List<String> ids;
+
+  // 住所がNULLのデータに絞り込む
+  Boolean onlyNullAddress;
 }

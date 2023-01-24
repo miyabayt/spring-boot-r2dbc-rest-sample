@@ -19,13 +19,14 @@ class DomaSqlBuilderTest {
     criteria.setName("john");
     criteria.setEmail("test@example.com");
 
-    val sql =
+    val sqlStatement =
         DomaSqlBuilder.builder()
             .dialect(new MysqlDialect())
             .sqlFilePath("META-INF/com/bigtreetc/sample/r2dbc/domain/sql/select.sql")
             .addParameter("criteria", StaffCriteria.class, criteria)
             .build();
 
+    val sql = sqlStatement.getFormattedSql();
     assertThat(sql).contains("'john'");
     assertThat(sql).contains("'test@example.com'");
   }
