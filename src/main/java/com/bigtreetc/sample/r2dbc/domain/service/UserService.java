@@ -9,7 +9,6 @@ import java.util.UUID;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
-import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -29,27 +28,27 @@ public class UserService {
   /**
    * ユーザを検索します。
    *
-   * @param user
+   * @param criteria
    * @param pageable
    * @return
    */
   @Transactional(readOnly = true) // 読み取りのみの場合は指定する
-  public Mono<Page<User>> findAll(final UserCriteria user, final Pageable pageable) {
-    Assert.notNull(user, "criteria must not be null");
+  public Mono<Page<User>> findAll(final UserCriteria criteria, final Pageable pageable) {
+    Assert.notNull(criteria, "criteria must not be null");
     Assert.notNull(pageable, "pageable must not be null");
-    return userRepository.findAll(Example.of(user), pageable);
+    return userRepository.findAll(criteria, pageable);
   }
 
   /**
    * ユーザを取得します。
    *
-   * @param user
+   * @param criteria
    * @return
    */
   @Transactional(readOnly = true)
-  public Mono<User> findOne(UserCriteria user) {
-    Assert.notNull(user, "criteria must not be null");
-    return userRepository.findOne(Example.of(user));
+  public Mono<User> findOne(UserCriteria criteria) {
+    Assert.notNull(criteria, "criteria must not be null");
+    return userRepository.findOne(criteria);
   }
 
   /**

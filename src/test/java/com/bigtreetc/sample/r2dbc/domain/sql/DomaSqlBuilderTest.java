@@ -2,7 +2,7 @@ package com.bigtreetc.sample.r2dbc.domain.sql;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.bigtreetc.sample.r2dbc.base.domain.sql.DomaSqlFileSelectQueryBuilder;
+import com.bigtreetc.sample.r2dbc.base.domain.sql.DomaSqlBuilder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.val;
@@ -10,7 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.seasar.doma.jdbc.dialect.MysqlDialect;
 
-class DomaSqlFileSelectQueryBuilderTest {
+class DomaSqlBuilderTest {
 
   @Test
   @DisplayName("単純なSQL文の作成ができること")
@@ -20,7 +20,7 @@ class DomaSqlFileSelectQueryBuilderTest {
     criteria.setEmail("test@example.com");
 
     val sql =
-        DomaSqlFileSelectQueryBuilder.builder()
+        DomaSqlBuilder.builder()
             .dialect(new MysqlDialect())
             .sqlFilePath("META-INF/com/bigtreetc/sample/r2dbc/domain/sql/select.sql")
             .addParameter("criteria", StaffCriteria.class, criteria)

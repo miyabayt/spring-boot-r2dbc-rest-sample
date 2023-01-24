@@ -12,7 +12,8 @@ import reactor.core.publisher.Flux;
 @Repository
 public interface PermissionRepository
     extends ReactiveSortingRepository<Permission, UUID>,
-        ReactiveQueryByExampleExecutor<Permission> {
+        ReactiveQueryByExampleExecutor<Permission>,
+        PermissionQueryRepository {
 
   Flux<Permission> findByPermissionCodeIn(List<String> permissionCodes);
 }

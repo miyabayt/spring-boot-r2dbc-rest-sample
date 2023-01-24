@@ -9,7 +9,6 @@ import java.util.UUID;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
-import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -29,16 +28,16 @@ public class CodeCategoryService {
   /**
    * コード分類マスタを検索します。
    *
-   * @param codeCategory
+   * @param criteria
    * @param pageable
    * @return
    */
   @Transactional(readOnly = true) // 読み取りのみの場合は指定する
   public Mono<Page<CodeCategory>> findAll(
-      final CodeCategoryCriteria codeCategory, final Pageable pageable) {
-    Assert.notNull(codeCategory, "codeCategory must not be null");
+      final CodeCategoryCriteria criteria, final Pageable pageable) {
+    Assert.notNull(criteria, "criteria must not be null");
     Assert.notNull(pageable, "pageable must not be null");
-    return codeCategoryRepository.findAll(Example.of(codeCategory), pageable);
+    return codeCategoryRepository.findAll(criteria, pageable);
   }
 
   /**
@@ -47,9 +46,9 @@ public class CodeCategoryService {
    * @return
    */
   @Transactional(readOnly = true)
-  public Mono<CodeCategory> findOne(final CodeCategoryCriteria codeCategory) {
-    Assert.notNull(codeCategory, "criteria must not be null");
-    return codeCategoryRepository.findOne(Example.of(codeCategory));
+  public Mono<CodeCategory> findOne(final CodeCategoryCriteria criteria) {
+    Assert.notNull(criteria, "criteria must not be null");
+    return codeCategoryRepository.findOne(criteria);
   }
 
   /**
@@ -67,7 +66,7 @@ public class CodeCategoryService {
   }
 
   /**
-   * コード分類を登録します。
+   * コード分類マスタを登録します。
    *
    * @param codeCategory
    * @return
@@ -79,7 +78,7 @@ public class CodeCategoryService {
   }
 
   /**
-   * コード分類を登録します。
+   * コード分類マスタを登録します。
    *
    * @param codeCategories
    * @return
@@ -93,7 +92,7 @@ public class CodeCategoryService {
   }
 
   /**
-   * コード分類を更新します。
+   * コード分類マスタを更新します。
    *
    * @param codeCategory
    * @return
@@ -104,7 +103,7 @@ public class CodeCategoryService {
   }
 
   /**
-   * コード分類を更新します。
+   * コード分類マスタを更新します。
    *
    * @param codeCategories
    * @return
@@ -115,7 +114,7 @@ public class CodeCategoryService {
   }
 
   /**
-   * コード分類を削除します。
+   * コード分類マスタを削除します。
    *
    * @return
    */
@@ -125,7 +124,7 @@ public class CodeCategoryService {
   }
 
   /**
-   * コード分類を削除します。
+   * コード分類マスタを削除します。
    *
    * @return
    */

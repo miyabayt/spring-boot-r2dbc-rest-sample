@@ -11,7 +11,8 @@ import reactor.core.publisher.Mono;
 @Repository
 public interface MailTemplateRepository
     extends ReactiveSortingRepository<MailTemplate, UUID>,
-        ReactiveQueryByExampleExecutor<MailTemplate> {
+        ReactiveQueryByExampleExecutor<MailTemplate>,
+        MailTemplateQueryRepository {
 
   Mono<MailTemplate> findByTemplateCode(String templateCode);
 }

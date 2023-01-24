@@ -12,7 +12,8 @@ import reactor.core.publisher.Mono;
 @Repository
 public interface RolePermissionRepository
     extends ReactiveSortingRepository<RolePermission, UUID>,
-        ReactiveQueryByExampleExecutor<RolePermission> {
+        ReactiveQueryByExampleExecutor<RolePermission>,
+        RolePermissionQueryRepository {
 
   Flux<RolePermission> findByRoleCode(String roleCode);
 

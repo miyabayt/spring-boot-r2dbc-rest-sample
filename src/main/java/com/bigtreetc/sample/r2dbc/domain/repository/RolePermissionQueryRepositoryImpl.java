@@ -4,8 +4,8 @@ import static com.bigtreetc.sample.r2dbc.base.domain.sql.DomaUtils.toSelectOptio
 
 import com.bigtreetc.sample.r2dbc.base.domain.sql.DomaDatabaseClient;
 import com.bigtreetc.sample.r2dbc.base.domain.sql.DomaSqlBuilder;
-import com.bigtreetc.sample.r2dbc.domain.model.User;
-import com.bigtreetc.sample.r2dbc.domain.model.UserCriteria;
+import com.bigtreetc.sample.r2dbc.domain.model.RolePermission;
+import com.bigtreetc.sample.r2dbc.domain.model.RolePermissionCriteria;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -17,33 +17,34 @@ import reactor.core.publisher.Mono;
 
 @RequiredArgsConstructor
 @Repository
-public class UserQueryRepositoryImpl implements UserQueryRepository {
+public class RolePermissionQueryRepositoryImpl implements RolePermissionQueryRepository {
 
   @NonNull final DomaDatabaseClient databaseClient;
 
   @Override
-  public Mono<User> findOne(final UserCriteria criteria) {
+  public Mono<RolePermission> findOne(final RolePermissionCriteria criteria) {
     val sqlBuilder =
         DomaSqlBuilder.builder()
             .sqlFilePath(
-                "META-INF/com/bigtreetc/sample/r2dbc/domain/repository/UserQueryRepository/findAll.sql")
-            .addParameter("criteria", UserCriteria.class, criteria);
+                "META-INF/com/bigtreetc/sample/r2dbc/domain/repository/RolePermissionQueryRepository/findAll.sql")
+            .addParameter("criteria", RolePermissionCriteria.class, criteria);
 
-    return databaseClient.one(sqlBuilder, User.class);
+    return databaseClient.one(sqlBuilder, RolePermission.class);
   }
 
   @Override
-  public Mono<Page<User>> findAll(final UserCriteria criteria, final Pageable pageable) {
+  public Mono<Page<RolePermission>> findAll(
+      final RolePermissionCriteria criteria, final Pageable pageable) {
     val selectOptions = toSelectOptions(pageable);
     val sqlBuilder =
         DomaSqlBuilder.builder()
             .sqlFilePath(
-                "META-INF/com/bigtreetc/sample/r2dbc/domain/repository/UserQueryRepository/findAll.sql")
-            .addParameter("criteria", UserCriteria.class, criteria)
+                "META-INF/com/bigtreetc/sample/r2dbc/domain/repository/RolePermissionQueryRepository/findAll.sql")
+            .addParameter("criteria", RolePermissionCriteria.class, criteria)
             .options(selectOptions);
 
     return databaseClient
-        .all(sqlBuilder, User.class)
+        .all(sqlBuilder, RolePermission.class)
         .collectList()
         .map(list -> new PageImpl<>(list, pageable, selectOptions.getCount()));
   }

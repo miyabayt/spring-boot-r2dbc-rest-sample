@@ -13,7 +13,6 @@ import java.util.UUID;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
-import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -36,25 +35,28 @@ public class CodeService {
   /**
    * コード定義を検索します。
    *
+   * @param criteria
+   * @param pageable
    * @return
    */
   @Transactional(readOnly = true) // 読み取りのみの場合は指定する
-  public Mono<Page<Code>> findAll(CodeCriteria code, Pageable pageable) {
-    Assert.notNull(code, "code must not be null");
+  public Mono<Page<Code>> findAll(final CodeCriteria criteria, final Pageable pageable) {
+    Assert.notNull(criteria, "criteria must not be null");
     Assert.notNull(pageable, "pageable must not be null");
-    return codeRepository.findAll(Example.of(code), pageable);
+    return codeRepository.findAll(criteria, pageable);
   }
 
   /**
-   * コード定義を取得します。
+   * コードマスタを取得します。
    *
+   * @param criteria
    * @return
    */
   @Transactional(readOnly = true)
-  public Mono<Code> findOne(CodeCriteria code) {
-    Assert.notNull(code, "code must not be null");
+  public Mono<Code> findOne(CodeCriteria criteria) {
+    Assert.notNull(criteria, "criteria must not be null");
     return codeRepository
-        .findOne(Example.of(code))
+        .findOne(criteria)
         .zipWith(codeCategoryRepository.findAll().collectList())
         .map(this::mergeCodeAndCodeCategories);
   }
@@ -142,19 +144,7 @@ public class CodeService {
     return codeRepository.deleteAllById(ids);
   }
 
-  private List<Code> mergeCodesAndCodeCategories(Tuple2<List<Code>, List<CodeCategory>> tuple2) {
-    val codes = tuple2.getT1();
-    val codeCategories = tuple2.getT2();
-    codes.forEach(
-        c ->
-            codeCategories.stream()
-                .filter(cc -> isEquals(cc.getCategoryCode(), c.getCategoryCode()))
-                .findFirst()
-                .ifPresent(cc -> c.setCategoryName(cc.getCategoryName())));
-    return codes;
-  }
-
-  private Code mergeCodeAndCodeCategories(Tuple2<? extends Code, List<CodeCategory>> tuple2) {
+  private Code mergeCodeAndCodeCategories(Tuple2<Code, List<CodeCategory>> tuple2) {
     val code = tuple2.getT1();
     val codeCategories = tuple2.getT2();
     codeCategories.stream()

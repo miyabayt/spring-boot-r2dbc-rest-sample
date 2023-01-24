@@ -1,20 +1,30 @@
 package com.bigtreetc.sample.r2dbc;
 
+import com.bigtreetc.sample.r2dbc.base.domain.sql.DomaDatabaseClient;
+import com.bigtreetc.sample.r2dbc.base.domain.sql.DomaDatabaseClientImpl;
 import io.r2dbc.spi.ConnectionFactory;
 import java.util.List;
 import java.util.UUID;
 import org.flywaydb.core.Flyway;
+import org.seasar.doma.jdbc.dialect.Dialect;
+import org.seasar.doma.jdbc.dialect.MysqlDialect;
+import org.seasar.doma.jdbc.dialect.PostgresDialect;
+import org.seasar.doma.jdbc.dialect.StandardDialect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.flyway.FlywayProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.jdbc.DatabaseDriver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.core.env.Environment;
 import org.springframework.data.convert.ReadingConverter;
 import org.springframework.data.convert.WritingConverter;
 import org.springframework.data.domain.ReactiveAuditorAware;
 import org.springframework.data.r2dbc.config.AbstractR2dbcConfiguration;
 import org.springframework.data.r2dbc.config.EnableR2dbcAuditing;
+import org.springframework.data.r2dbc.convert.MappingR2dbcConverter;
+import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
 import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
@@ -75,5 +85,28 @@ public class R2dbcConfig extends AbstractR2dbcConfiguration {
                 flywayProperties.getUrl(),
                 flywayProperties.getUser(),
                 flywayProperties.getPassword()));
+  }
+
+  @Bean
+  public Dialect dialect(Environment environment) {
+    String url = environment.getProperty("spring.datasource.url");
+    if (url != null) {
+      DatabaseDriver databaseDriver = DatabaseDriver.fromJdbcUrl(url);
+      switch (databaseDriver) {
+        case SQLSERVER, MYSQL -> {
+          return new MysqlDialect();
+        }
+        case POSTGRESQL -> {
+          return new PostgresDialect();
+        }
+      }
+    }
+    return new StandardDialect();
+  }
+
+  @Bean
+  public DomaDatabaseClient domaDatabaseClient(
+      R2dbcEntityTemplate r2dbcEntityTemplate, MappingR2dbcConverter converter, Dialect dialect) {
+    return new DomaDatabaseClientImpl(r2dbcEntityTemplate, converter, dialect);
   }
 }

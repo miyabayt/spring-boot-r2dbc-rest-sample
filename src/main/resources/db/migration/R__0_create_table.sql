@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS code_categories(
   , version INT(11) unsigned NOT NULL DEFAULT 1 COMMENT '改訂番号'
   , PRIMARY KEY (id)
   , KEY idx_code_categories_01 (category_code)
-) COMMENT='コード分類';
+) COMMENT='コード分類マスタ';
 
 CREATE TABLE IF NOT EXISTS codes(
   id VARCHAR(36) NOT NULL COMMENT 'コードID'
@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS roles(
   , version INT(11) unsigned NOT NULL DEFAULT 1 COMMENT '改訂番号'
   , PRIMARY KEY (id)
   , KEY idx_roles_01 (role_code)
-) COMMENT='ロール';
+) COMMENT='ロールマスタ';
 
 CREATE TABLE IF NOT EXISTS staff_roles(
   id VARCHAR(36) NOT NULL COMMENT '担当者ロールID'
@@ -111,7 +111,7 @@ CREATE TABLE IF NOT EXISTS staffs(
   , PRIMARY KEY (id)
   , KEY idx_staffs_01 (email)
   , KEY idx_staffs_02 (password_reset_token)
-) COMMENT='担当者';
+) COMMENT='担当者マスタ';
 
 CREATE TABLE IF NOT EXISTS users(
   id VARCHAR(36) NOT NULL COMMENT 'ユーザID'
@@ -201,4 +201,4 @@ CREATE TABLE IF NOT EXISTS holidays(
   , version INT(11) unsigned NOT NULL DEFAULT 1 COMMENT '改訂番号'
   , PRIMARY KEY (id)
   , KEY idx_holidays_01 (holiday_name)
-) COMMENT='祝日';
+) COMMENT='祝日マスタ';

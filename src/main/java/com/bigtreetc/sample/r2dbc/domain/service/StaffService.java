@@ -9,7 +9,6 @@ import java.util.UUID;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
-import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -29,27 +28,27 @@ public class StaffService {
   /**
    * 担当者を検索します。
    *
-   * @param staff
+   * @param criteria
    * @param pageable
    * @return
    */
   @Transactional(readOnly = true) // 読み取りのみの場合は指定する
-  public Mono<Page<Staff>> findAll(final StaffCriteria staff, final Pageable pageable) {
-    Assert.notNull(staff, "staff must not be null");
+  public Mono<Page<Staff>> findAll(final StaffCriteria criteria, final Pageable pageable) {
+    Assert.notNull(criteria, "criteria must not be null");
     Assert.notNull(pageable, "pageable must not be null");
-    return staffRepository.findAll(Example.of(staff), pageable);
+    return staffRepository.findAll(criteria, pageable);
   }
 
   /**
    * 担当者を取得します。
    *
-   * @param staff
+   * @param criteria
    * @return
    */
   @Transactional(readOnly = true)
-  public Mono<Staff> findOne(StaffCriteria staff) {
-    Assert.notNull(staff, "staff must not be null");
-    return staffRepository.findOne(Example.of(staff));
+  public Mono<Staff> findOne(StaffCriteria criteria) {
+    Assert.notNull(criteria, "criteria must not be null");
+    return staffRepository.findOne(criteria);
   }
 
   /**

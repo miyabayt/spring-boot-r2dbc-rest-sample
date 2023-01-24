@@ -7,10 +7,12 @@ import org.springframework.data.repository.reactive.ReactiveSortingRepository;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
 
-/** ロールリポジトリ */
+/** ロールマスタリポジトリ */
 @Repository
 public interface RoleRepository
-    extends ReactiveSortingRepository<Role, UUID>, ReactiveQueryByExampleExecutor<Role> {
+    extends ReactiveSortingRepository<Role, UUID>,
+        ReactiveQueryByExampleExecutor<Role>,
+        RoleQueryRepository {
 
   Mono<Void> deleteByRoleCode(String roleCode);
 }

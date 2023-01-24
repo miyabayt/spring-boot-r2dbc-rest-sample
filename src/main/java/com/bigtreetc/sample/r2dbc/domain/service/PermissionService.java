@@ -1,25 +1,16 @@
 package com.bigtreetc.sample.r2dbc.domain.service;
 
-import static com.bigtreetc.sample.r2dbc.base.util.ValidateUtils.isNotEmpty;
-import static org.springframework.data.relational.core.query.Criteria.where;
-
 import com.bigtreetc.sample.r2dbc.base.exception.NoDataFoundException;
 import com.bigtreetc.sample.r2dbc.domain.model.Permission;
 import com.bigtreetc.sample.r2dbc.domain.model.PermissionCriteria;
 import com.bigtreetc.sample.r2dbc.domain.repository.PermissionRepository;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
-import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
-import org.springframework.data.relational.core.query.Criteria;
-import org.springframework.data.relational.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -32,55 +23,39 @@ import reactor.core.publisher.Mono;
 @Transactional(rollbackFor = Throwable.class)
 public class PermissionService {
 
-  @NonNull final R2dbcEntityTemplate r2dbcEntityTemplate;
-
   @NonNull final PermissionRepository permissionRepository;
 
   /**
    * 権限を検索します。
    *
-   * @param permission
+   * @param criteria
    * @param pageable
    * @return
    */
   @Transactional(readOnly = true) // 読み取りのみの場合は指定する
-  public Mono<Page<Permission>> findAll(Permission permission, Pageable pageable) {
-    Assert.notNull(permission, "permission must not be null");
+  public Mono<Page<Permission>> findAll(
+      final PermissionCriteria criteria, final Pageable pageable) {
+    Assert.notNull(criteria, "criteria must not be null");
     Assert.notNull(pageable, "pageable must not be null");
-
-    val criteria = new ArrayList<Criteria>();
-    if (isNotEmpty(permission.getPermissionCode())) {
-      criteria.add(where("permission_code").is(permission.getPermissionCode()));
-    }
-    if (isNotEmpty(permission.getPermissionName())) {
-      criteria.add(
-          where("permission_name").like("%%%s%%".formatted(permission.getPermissionName())));
-    }
-
-    val query = Query.query(Criteria.from(criteria));
-    return r2dbcEntityTemplate
-        .select(Permission.class)
-        .matching(query.with(pageable))
-        .all()
-        .collectList()
-        .zipWith(r2dbcEntityTemplate.count(query, Permission.class))
-        .map(tuple2 -> new PageImpl<>(tuple2.getT1(), pageable, tuple2.getT2()));
+    return permissionRepository.findAll(criteria, pageable);
   }
 
   /**
    * 権限を取得します。
    *
+   * @param criteria
    * @return
    */
   @Transactional(readOnly = true)
-  public Mono<Permission> findOne(PermissionCriteria permission) {
-    Assert.notNull(permission, "permission must not be null");
-    return permissionRepository.findOne(Example.of(permission));
+  public Mono<Permission> findOne(PermissionCriteria criteria) {
+    Assert.notNull(criteria, "criteria must not be null");
+    return permissionRepository.findOne(criteria);
   }
 
   /**
    * 権限を取得します。
    *
+   * @param id
    * @return
    */
   @Transactional(readOnly = true)

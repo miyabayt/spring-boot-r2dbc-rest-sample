@@ -9,7 +9,6 @@ import java.util.UUID;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
-import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -29,15 +28,15 @@ public class HolidayService {
   /**
    * 祝日を検索します。
    *
-   * @param holiday
+   * @param criteria
    * @param pageable
    * @return
    */
   @Transactional(readOnly = true) // 読み取りのみの場合は指定する
-  public Mono<Page<Holiday>> findAll(HolidayCriteria holiday, Pageable pageable) {
-    Assert.notNull(holiday, "holiday must not be null");
+  public Mono<Page<Holiday>> findAll(final HolidayCriteria criteria, final Pageable pageable) {
+    Assert.notNull(criteria, "criteria must not be null");
     Assert.notNull(pageable, "pageable must not be null");
-    return holidayRepository.findAll(Example.of(holiday), pageable);
+    return holidayRepository.findAll(criteria, pageable);
   }
 
   /**
@@ -46,9 +45,9 @@ public class HolidayService {
    * @return
    */
   @Transactional(readOnly = true)
-  public Mono<Holiday> findOne(HolidayCriteria holiday) {
-    Assert.notNull(holiday, "holiday must not be null");
-    return holidayRepository.findOne(Example.of(holiday));
+  public Mono<Holiday> findOne(HolidayCriteria criteria) {
+    Assert.notNull(criteria, "criteria must not be null");
+    return holidayRepository.findOne(criteria);
   }
 
   /**
