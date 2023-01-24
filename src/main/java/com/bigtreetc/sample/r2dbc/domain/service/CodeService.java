@@ -22,7 +22,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
 
-/** コード定義サービス */
+/** コードサービス */
 @RequiredArgsConstructor
 @Service
 @Transactional(rollbackFor = Throwable.class)
@@ -33,7 +33,7 @@ public class CodeService {
   @NonNull final CodeCategoryRepository codeCategoryRepository;
 
   /**
-   * コード定義を検索します。
+   * コードマスタを検索します。
    *
    * @param criteria
    * @param pageable
@@ -62,8 +62,9 @@ public class CodeService {
   }
 
   /**
-   * コード定義を取得します。
+   * コードマスタを取得します。
    *
+   * @param id
    * @return
    */
   @Transactional(readOnly = true)
@@ -77,7 +78,7 @@ public class CodeService {
   }
 
   /**
-   * コード定義を登録します。
+   * コードマスタを追加します。
    *
    * @param code
    * @return
@@ -89,7 +90,7 @@ public class CodeService {
   }
 
   /**
-   * コード定義を登録します。
+   * コードマスタを登録します。
    *
    * @param codes
    * @return
@@ -103,7 +104,7 @@ public class CodeService {
   }
 
   /**
-   * コード定義を更新します。
+   * コードマスタを更新します。
    *
    * @param code
    * @return
@@ -114,7 +115,7 @@ public class CodeService {
   }
 
   /**
-   * コード定義を更新します。
+   * コードマスタを更新します。
    *
    * @param codes
    * @return
@@ -125,7 +126,7 @@ public class CodeService {
   }
 
   /**
-   * コード定義を削除します。
+   * コードマスタを削除します。
    *
    * @return
    */
@@ -135,7 +136,7 @@ public class CodeService {
   }
 
   /**
-   * コード定義を削除します。
+   * コードマスタを削除します。
    *
    * @return
    */

@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS codes(
   , version INT(11) unsigned NOT NULL DEFAULT 1 COMMENT '改訂番号'
   , PRIMARY KEY (id)
   , KEY idx_codes_01 (code_value)
-) COMMENT='コード';
+) COMMENT='コードマスタ';
 
 CREATE TABLE IF NOT EXISTS permissions(
   id VARCHAR(36) NOT NULL COMMENT '権限ID'

@@ -6,7 +6,7 @@ import org.springframework.data.repository.query.ReactiveQueryByExampleExecutor;
 import org.springframework.data.repository.reactive.ReactiveSortingRepository;
 import org.springframework.stereotype.Repository;
 
-/** コード定義リポジトリ */
+/** コードマスタリポジトリ */
 @Repository
 public interface CodeRepository
     extends ReactiveSortingRepository<Code, UUID>,

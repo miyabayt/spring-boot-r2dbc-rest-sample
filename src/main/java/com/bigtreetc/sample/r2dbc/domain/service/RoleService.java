@@ -63,8 +63,9 @@ public class RoleService {
   }
 
   /**
-   * ロールを取得します。
+   * ロールマスタを取得します。
    *
+   * @param id
    * @return
    */
   @Transactional(readOnly = true)
@@ -78,7 +79,7 @@ public class RoleService {
   }
 
   /**
-   * ロールを登録します。
+   * ロールマスタを登録します。
    *
    * @param role
    * @return
@@ -96,7 +97,7 @@ public class RoleService {
   }
 
   /**
-   * ロールを登録します。
+   * ロールマスタを登録します。
    *
    * @param roles
    * @return
@@ -110,7 +111,7 @@ public class RoleService {
   }
 
   /**
-   * ロールを更新します。
+   * ロールマスタを更新します。
    *
    * @param role
    * @return
@@ -127,7 +128,7 @@ public class RoleService {
   }
 
   /**
-   * ロールを更新します。
+   * ロールマスタを更新します。
    *
    * @param roles
    * @return
@@ -138,7 +139,7 @@ public class RoleService {
   }
 
   /**
-   * ロールを削除します。
+   * ロールマスタを削除します。
    *
    * @return
    */
@@ -156,7 +157,7 @@ public class RoleService {
   }
 
   /**
-   * ロールを削除します。
+   * ロールマスタを削除します。
    *
    * @return
    */

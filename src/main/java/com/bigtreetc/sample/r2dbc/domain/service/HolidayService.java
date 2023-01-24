@@ -26,7 +26,7 @@ public class HolidayService {
   @NonNull final HolidayRepository holidayRepository;
 
   /**
-   * 祝日を検索します。
+   * 祝日マスタを検索します。
    *
    * @param criteria
    * @param pageable
@@ -40,7 +40,7 @@ public class HolidayService {
   }
 
   /**
-   * 祝日を取得します。
+   * 祝日マスタを取得します。
    *
    * @return
    */
@@ -51,8 +51,9 @@ public class HolidayService {
   }
 
   /**
-   * 祝日を取得します。
+   * 祝日マスタを取得します。
    *
+   * @param id
    * @return
    */
   @Transactional(readOnly = true)
@@ -64,7 +65,7 @@ public class HolidayService {
   }
 
   /**
-   * 祝日を登録します。
+   * 祝日マスタを登録します。
    *
    * @param holiday
    * @return
@@ -76,7 +77,7 @@ public class HolidayService {
   }
 
   /**
-   * 祝日を登録します。
+   * 祝日マスタを登録します。
    *
    * @param holidays
    * @return
@@ -90,7 +91,7 @@ public class HolidayService {
   }
 
   /**
-   * 祝日を更新します。
+   * 祝日マスタを更新します。
    *
    * @param holiday
    * @return
@@ -101,7 +102,7 @@ public class HolidayService {
   }
 
   /**
-   * 祝日を更新します。
+   * 祝日マスタを更新します。
    *
    * @param holidays
    * @return
@@ -112,7 +113,7 @@ public class HolidayService {
   }
 
   /**
-   * 祝日を削除します。
+   * 祝日マスタを削除します。
    *
    * @return
    */
@@ -122,7 +123,7 @@ public class HolidayService {
   }
 
   /**
-   * 祝日を削除します。
+   * 祝日マスタを削除します。
    *
    * @return
    */

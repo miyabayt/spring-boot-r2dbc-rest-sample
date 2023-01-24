@@ -17,7 +17,7 @@ import org.springframework.util.Assert;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** 担当者サービス */
+/** 担当者マスタサービス */
 @RequiredArgsConstructor
 @Service
 @Transactional(rollbackFor = Throwable.class)
@@ -26,7 +26,7 @@ public class StaffService {
   @NonNull final StaffRepository staffRepository;
 
   /**
-   * 担当者を検索します。
+   * 担当者マスタを検索します。
    *
    * @param criteria
    * @param pageable
@@ -40,7 +40,7 @@ public class StaffService {
   }
 
   /**
-   * 担当者を取得します。
+   * 担当者マスタを取得します。
    *
    * @param criteria
    * @return
@@ -52,7 +52,7 @@ public class StaffService {
   }
 
   /**
-   * 担当者を取得します。
+   * 担当者マスタを取得します。
    *
    * @param id
    * @return
@@ -66,7 +66,7 @@ public class StaffService {
   }
 
   /**
-   * 担当者を登録します。
+   * 担当者マスタを登録します。
    *
    * @param staff
    * @return
@@ -78,7 +78,7 @@ public class StaffService {
   }
 
   /**
-   * 担当者を登録します。
+   * 担当者マスタを登録します。
    *
    * @param staffs
    * @return
@@ -92,7 +92,7 @@ public class StaffService {
   }
 
   /**
-   * 担当者を更新します。
+   * 担当者マスタを更新します。
    *
    * @param staff
    * @return
@@ -103,7 +103,7 @@ public class StaffService {
   }
 
   /**
-   * 担当者を更新します。
+   * 担当者マスタを更新します。
    *
    * @param staffs
    * @return
@@ -114,7 +114,7 @@ public class StaffService {
   }
 
   /**
-   * 担当者を削除します。
+   * 担当者マスタを削除します。
    *
    * @return
    */
@@ -124,7 +124,7 @@ public class StaffService {
   }
 
   /**
-   * 担当者を削除します。
+   * 担当者マスタを削除します。
    *
    * @return
    */

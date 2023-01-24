@@ -16,7 +16,7 @@ public class Code extends BaseEntityImpl implements Persistable<UUID> {
 
   private static final long serialVersionUID = -1L;
 
-  // コード定義ID
+  // コードID
   @Id UUID id;
 
   // 分類コード
