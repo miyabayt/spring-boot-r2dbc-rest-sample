@@ -65,7 +65,7 @@ dependencies {
     implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-csv"
 
     implementation "org.seasar.doma:doma-template:2.53.1"
-    implementation "org.modelmapper:modelmapper:3.1.0"
+    implementation "org.modelmapper:modelmapper:3.1.1"
     implementation "com.auth0:java-jwt:3.19.2"
     implementation "io.projectreactor.addons:reactor-extra"
     implementation "org.springdoc:springdoc-openapi-webflux-ui:${springdocVersion}"
