@@ -70,6 +70,10 @@ public class JwtRepository {
         .thenReturn(newRefreshToken);
   }
 
+  public Mono<Boolean> deleteRefreshToken(String username, String refreshToken) {
+    return redisTemplate.delete(refreshToken).map(deleted -> deleted == 1);
+  }
+
   private Mono<Boolean> storeRefreshToken(String key, String username) {
     return redisTemplate
         .opsForValue()
