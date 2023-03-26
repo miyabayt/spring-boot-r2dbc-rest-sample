@@ -64,7 +64,7 @@ dependencies {
     implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
     implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-csv"
 
-    implementation "org.seasar.doma:doma-template:2.53.1"
+    implementation "org.seasar.doma:doma-template:2.53.3"
     implementation "org.modelmapper:modelmapper:3.1.0"
     implementation "com.auth0:java-jwt:3.19.2"
     implementation "io.projectreactor.addons:reactor-extra"
