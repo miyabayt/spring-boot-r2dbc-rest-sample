@@ -13,9 +13,9 @@ public class SearchStaffRequest implements Serializable {
 
   UUID id;
 
-  String firstName;
+  // 氏名
+  String fullName;
 
-  String lastName;
-
+  // メールアドレス
   String email;
 }

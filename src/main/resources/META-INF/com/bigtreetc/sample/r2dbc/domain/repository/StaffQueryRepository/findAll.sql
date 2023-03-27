@@ -13,6 +13,9 @@ WHERE
 /*%if criteria.firstName != null */
     AND s.first_name LIKE /* @infix(criteria.firstName) */'john'
 /*%end*/
+/*%if criteria.fullName != null */
+    AND s.full_name LIKE /* @infix(criteria.fullName) */'johndoe'
+/*%end*/
 /*%if criteria.email != null */
     AND s.email = /* criteria.email */'aaaa@bbbb.com'
 /*%end*/

@@ -98,6 +98,7 @@ CREATE TABLE IF NOT EXISTS staffs(
   id VARCHAR(36) NOT NULL COMMENT '担当者ID'
   , first_name VARCHAR(40) NOT NULL COMMENT '名'
   , last_name VARCHAR(40) NOT NULL COMMENT '姓'
+  , full_name VARCHAR(100) GENERATED ALWAYS AS (CONCAT(first_name, last_name)) VIRTUAL COMMENT '氏名'
   , email VARCHAR(100) DEFAULT NULL COMMENT 'メールアドレス'
   , password VARCHAR(100) DEFAULT NULL COMMENT 'パスワード'
   , tel VARCHAR(20) DEFAULT NULL COMMENT '電話番号'
@@ -111,6 +112,7 @@ CREATE TABLE IF NOT EXISTS staffs(
   , PRIMARY KEY (id)
   , KEY idx_staffs_01 (email)
   , KEY idx_staffs_02 (password_reset_token)
+  , KEY idx_staffs_03 (full_name)
 ) COMMENT='担当者マスタ';
 
 CREATE TABLE IF NOT EXISTS users(
