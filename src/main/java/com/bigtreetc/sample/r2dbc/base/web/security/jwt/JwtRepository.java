@@ -74,12 +74,22 @@ public class JwtRepository {
     return redisTemplate.delete(refreshToken).map(deleted -> deleted == 1);
   }
 
-  private Mono<Boolean> storeRefreshToken(String key, String username) {
+  private Mono<Boolean> storeRefreshToken(String refreshToken, String username) {
     return redisTemplate
         .opsForValue()
-        .set(key, username)
-        .flatMap(done -> redisTemplate.expire(key, Duration.ofHours(refreshTokenTimeoutHours)))
-        .doOnSuccess(done -> log.info("refresh token has stored. [name={}, key={}]", username, key))
+        .set(refreshToken, username)
+        .flatMap(
+            done -> redisTemplate.expire(refreshToken, Duration.ofHours(refreshTokenTimeoutHours)))
+        .doOnSuccess(
+            done -> {
+              if (log.isDebugEnabled()) {
+                log.debug(
+                    "refresh token has stored. [username={}, refreshToken={}]",
+                    username,
+                    refreshToken);
+              }
+              log.info("refresh token has stored. [username={}]", username);
+            })
         .doOnError(e -> log.warn("failed to store refresh token.", e));
   }
 }

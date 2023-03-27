@@ -55,7 +55,7 @@ public abstract class AbstractRestController {
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE);
 
     if (isAttachment) {
-      val encodedFilename = URLEncoder.encode(filename, StandardCharsets.UTF_8.name());
+      val encodedFilename = URLEncoder.encode(filename, StandardCharsets.UTF_8);
       val contentDisposition = String.format("attachment; filename*=UTF-8''%s", encodedFilename);
       responseEntity.header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition);
     }
