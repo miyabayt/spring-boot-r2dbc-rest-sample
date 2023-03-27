@@ -93,8 +93,25 @@ public class CodeController extends AbstractRestController {
   @Operation(summary = "コードマスタ検索", description = "コードマスタを検索します。")
   @PreAuthorize("hasAuthority('code:read')")
   @GetMapping("/codes")
-  public Mono<ApiResponse> index(
+  public Mono<ApiResponse> search(
       @ModelAttribute SearchCodeRequest request, @Parameter(hidden = true) Pageable pageable) {
+    val criteria = modelMapper.map(request, CodeCriteria.class);
+    return codeService.findAll(criteria, pageable).flatMap(this::toApiResponse);
+  }
+
+  /**
+   * コードマスタを検索します。（POST版）
+   *
+   * @param request
+   * @param pageable
+   * @return
+   */
+  @PageableAsQueryParam
+  @Operation(summary = "コードマスタ検索", description = "コードマスタを検索します。")
+  @PreAuthorize("hasAuthority('code:read')")
+  @PostMapping("/codes/search")
+  public Mono<ApiResponse> searchByPost(
+      @RequestBody SearchCodeRequest request, @Parameter(hidden = true) Pageable pageable) {
     val criteria = modelMapper.map(request, CodeCriteria.class);
     return codeService.findAll(criteria, pageable).flatMap(this::toApiResponse);
   }

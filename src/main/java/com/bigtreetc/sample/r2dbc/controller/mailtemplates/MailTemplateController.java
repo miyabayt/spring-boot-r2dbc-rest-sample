@@ -91,9 +91,26 @@ public class MailTemplateController extends AbstractRestController {
   @Operation(summary = "メールテンプレート検索", description = "メールテンプレートを検索します。")
   @PreAuthorize("hasAuthority('mailTemplate:read')")
   @GetMapping("/mailTemplates")
-  public Mono<ApiResponse> index(
+  public Mono<ApiResponse> search(
       @ModelAttribute SearchMailTemplateRequest request,
       @Parameter(hidden = true) Pageable pageable) {
+    val criteria = modelMapper.map(request, MailTemplateCriteria.class);
+    return mailTemplateService.findAll(criteria, pageable).flatMap(this::toApiResponse);
+  }
+
+  /**
+   * メールテンプレートを検索します。（POST版）
+   *
+   * @param request
+   * @param pageable
+   * @return
+   */
+  @PageableAsQueryParam
+  @Operation(summary = "メールテンプレート検索", description = "メールテンプレートを検索します。")
+  @PreAuthorize("hasAuthority('mailTemplate:read')")
+  @PostMapping("/mailTemplates/search")
+  public Mono<ApiResponse> searchByPost(
+      @RequestBody SearchMailTemplateRequest request, @Parameter(hidden = true) Pageable pageable) {
     val criteria = modelMapper.map(request, MailTemplateCriteria.class);
     return mailTemplateService.findAll(criteria, pageable).flatMap(this::toApiResponse);
   }

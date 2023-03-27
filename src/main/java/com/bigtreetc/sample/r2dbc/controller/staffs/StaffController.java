@@ -102,8 +102,25 @@ public class StaffController extends AbstractRestController {
   @Operation(summary = "担当者マスタ検索", description = "担当者マスタを検索します。")
   @PreAuthorize("hasAuthority('staff:read')")
   @GetMapping("/staffs")
-  public Mono<ApiResponse> index(
+  public Mono<ApiResponse> search(
       @ModelAttribute SearchStaffRequest request, @Parameter(hidden = true) Pageable pageable) {
+    val criteria = modelMapper.map(request, StaffCriteria.class);
+    return staffService.findAll(criteria, pageable).flatMap(this::toApiResponse);
+  }
+
+  /**
+   * 担当者マスタを検索します。（POST版）
+   *
+   * @param request
+   * @param pageable
+   * @return
+   */
+  @PageableAsQueryParam
+  @Operation(summary = "担当者マスタ検索", description = "担当者マスタを検索します。")
+  @PreAuthorize("hasAuthority('staff:read')")
+  @PostMapping("/staffs/search")
+  public Mono<ApiResponse> searchByPost(
+      @RequestBody SearchStaffRequest request, @Parameter(hidden = true) Pageable pageable) {
     val criteria = modelMapper.map(request, StaffCriteria.class);
     return staffService.findAll(criteria, pageable).flatMap(this::toApiResponse);
   }

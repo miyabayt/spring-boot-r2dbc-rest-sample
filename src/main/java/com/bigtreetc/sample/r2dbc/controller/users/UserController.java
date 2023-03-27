@@ -102,8 +102,25 @@ public class UserController extends AbstractRestController {
   @Operation(summary = "ユーザ検索", description = "ユーザを検索します。")
   @PreAuthorize("hasAuthority('user:read')")
   @GetMapping("/users")
-  public Mono<ApiResponse> index(
+  public Mono<ApiResponse> search(
       @ModelAttribute SearchUserRequest request, @Parameter(hidden = true) Pageable pageable) {
+    val criteria = modelMapper.map(request, UserCriteria.class);
+    return userService.findAll(criteria, pageable).flatMap(this::toApiResponse);
+  }
+
+  /**
+   * ユーザを検索します。（POST版）
+   *
+   * @param request
+   * @param pageable
+   * @return
+   */
+  @PageableAsQueryParam
+  @Operation(summary = "ユーザ検索", description = "ユーザを検索します。")
+  @PreAuthorize("hasAuthority('user:read')")
+  @PostMapping("/users/search")
+  public Mono<ApiResponse> searchByPost(
+      @RequestBody SearchUserRequest request, @Parameter(hidden = true) Pageable pageable) {
     val criteria = modelMapper.map(request, UserCriteria.class);
     return userService.findAll(criteria, pageable).flatMap(this::toApiResponse);
   }

@@ -109,8 +109,25 @@ public class RoleController extends AbstractRestController {
   @Operation(summary = "ロールマスタ検索", description = "ロールマスタを検索します。")
   @PreAuthorize("hasAuthority('role:read')")
   @GetMapping("/roles")
-  public Mono<ApiResponse> index(
+  public Mono<ApiResponse> search(
       @ModelAttribute SearchRoleRequest request, @Parameter(hidden = true) Pageable pageable) {
+    val criteria = modelMapper.map(request, RoleCriteria.class);
+    return roleService.findAll(criteria, pageable).flatMap(this::toApiResponse);
+  }
+
+  /**
+   * ロールマスタを検索します。（POST版）
+   *
+   * @param request
+   * @param pageable
+   * @return
+   */
+  @PageableAsQueryParam
+  @Operation(summary = "ロールマスタ検索", description = "ロールマスタを検索します。")
+  @PreAuthorize("hasAuthority('role:read')")
+  @PostMapping("/roles/search")
+  public Mono<ApiResponse> searchByPost(
+      @RequestBody SearchRoleRequest request, @Parameter(hidden = true) Pageable pageable) {
     val criteria = modelMapper.map(request, RoleCriteria.class);
     return roleService.findAll(criteria, pageable).flatMap(this::toApiResponse);
   }

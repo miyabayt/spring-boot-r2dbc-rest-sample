@@ -90,8 +90,25 @@ public class HolidayController extends AbstractRestController {
   @Operation(summary = "祝日マスタ検索", description = "祝日マスタを検索します。")
   @PreAuthorize("hasAuthority('holiday:read')")
   @GetMapping("/holidays")
-  public Mono<ApiResponse> index(
+  public Mono<ApiResponse> search(
       @ModelAttribute SearchHolidayRequest request, @Parameter(hidden = true) Pageable pageable) {
+    val criteria = modelMapper.map(request, HolidayCriteria.class);
+    return holidayService.findAll(criteria, pageable).flatMap(this::toApiResponse);
+  }
+
+  /**
+   * 祝日マスタを検索します。（POST版）
+   *
+   * @param request
+   * @param pageable
+   * @return
+   */
+  @PageableAsQueryParam
+  @Operation(summary = "祝日マスタ検索", description = "祝日マスタを検索します。")
+  @PreAuthorize("hasAuthority('holiday:read')")
+  @PostMapping("/holidays/search")
+  public Mono<ApiResponse> searchByPost(
+      @RequestBody SearchHolidayRequest request, @Parameter(hidden = true) Pageable pageable) {
     val criteria = modelMapper.map(request, HolidayCriteria.class);
     return holidayService.findAll(criteria, pageable).flatMap(this::toApiResponse);
   }
