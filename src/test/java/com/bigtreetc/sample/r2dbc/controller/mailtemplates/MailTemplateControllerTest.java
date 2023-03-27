@@ -1,7 +1,8 @@
-package com.bigtreetc.sample.r2dbc.controller.system.codecategories;
+package com.bigtreetc.sample.r2dbc.controller.mailtemplates;
 
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers.springSecurity;
 
 import com.bigtreetc.sample.r2dbc.BaseTestContainerTest;
@@ -20,7 +21,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 @SpringBootTest
 @AutoConfigureWebTestClient
-class CodeCategoryControllerTest extends BaseTestContainerTest {
+class MailTemplateControllerTest extends BaseTestContainerTest {
 
   @Autowired ApplicationContext context;
 
@@ -38,14 +39,14 @@ class CodeCategoryControllerTest extends BaseTestContainerTest {
   }
 
   @Test
-  @DisplayName("権限を持つロールで、カテゴリ分類マスタを検索できること")
+  @DisplayName("権限を持つロールで、メールテンプレートを検索できること")
   void test1() throws Exception {
-    val token = jwtRepository.createAccessToken("test", List.of("codeCategory:read")).block();
+    val token = jwtRepository.createAccessToken("test", List.of("mailTemplate:read")).block();
     assertThat(token).isNotNull();
 
     webClient
         .get()
-        .uri("/api/system/codeCategories")
+        .uri("/api/system/mailTemplates")
         .accept(MediaType.APPLICATION_JSON)
         .headers(http -> http.setBearerAuth(token))
         .exchange()
@@ -61,14 +62,14 @@ class CodeCategoryControllerTest extends BaseTestContainerTest {
   }
 
   @Test
-  @DisplayName("権限を持たないロールでは、カテゴリ分類マスタ検索がエラーになること")
+  @DisplayName("権限を持たないロールでは、メールテンプレート検索がエラーになること")
   void test2() throws Exception {
     val token = jwtRepository.createAccessToken("test", emptyList()).block();
     assertThat(token).isNotNull();
 
     webClient
         .get()
-        .uri("/api/system/codeCategories")
+        .uri("/api/system/mailTemplates")
         .accept(MediaType.APPLICATION_JSON)
         .headers(http -> http.setBearerAuth(token))
         .exchange()
