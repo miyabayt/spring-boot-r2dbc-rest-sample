@@ -40,8 +40,8 @@ public class ElapsedMillisLoggingFilter implements WebFilter {
 
   private void logElapsed(ServerWebExchange exchange, long beforeNanoSec) {
     val requestPath = exchange.getRequest().getPath().value();
-    val requestMethod = exchange.getRequest().getMethodValue();
-    val responseStatus = exchange.getResponse().getRawStatusCode();
+    val requestMethod = exchange.getRequest().getMethod();
+    val responseStatus = exchange.getResponse().getStatusCode();
     val elapsedNanoSec = System.nanoTime() - beforeNanoSec;
     val elapsedMilliSec = NANOSECONDS.toMillis(elapsedNanoSec);
     log.info(

@@ -245,7 +245,7 @@ public class RoleController extends AbstractRestController {
         .map(
             pages -> {
               val csvList = modelMapper.map(pages.getContent(), toListType(RoleCsv.class));
-              val dataBuffer = response.bufferFactory().allocateBuffer();
+              val dataBuffer = response.bufferFactory().allocateBuffer(1024);
               CsvUtils.writeCsv(RoleCsv.class, csvList, dataBuffer);
               return new InputStreamResource(dataBuffer.asInputStream(true));
             })

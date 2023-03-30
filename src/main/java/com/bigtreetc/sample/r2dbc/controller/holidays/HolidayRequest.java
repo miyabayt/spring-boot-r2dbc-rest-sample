@@ -1,8 +1,8 @@
 package com.bigtreetc.sample.r2dbc.controller.holidays;
 
+import jakarta.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 import java.util.UUID;
-import javax.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -2,10 +2,10 @@ package com.bigtreetc.sample.r2dbc.base.domain.validator.annotation;
 
 import static com.bigtreetc.sample.r2dbc.base.util.ValidateUtils.isEmpty;
 
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 
 /** 入力チェック（郵便番号） */
 public class ZipCodeValidator implements ConstraintValidator<ZipCode, String> {

@@ -73,8 +73,9 @@ dependencies {
 
     implementation "org.flywaydb:flyway-core"
     implementation "org.flywaydb:flyway-mysql"
-    runtimeOnly "dev.miku:r2dbc-mysql:0.8.2.RELEASE"
-    runtimeOnly "mysql:mysql-connector-java"
+
+    runtimeOnly "io.asyncer:r2dbc-mysql:0.9.1"
+    runtimeOnly "com.mysql:mysql-connector-j"
     // runtimeOnly "io.r2dbc:r2dbc-postgresql"
     // runtimeOnly "org.postgresql:postgresql"
 
@@ -90,6 +91,8 @@ dependencies {
 
     testImplementation "org.assertj:assertj-core"
     testImplementation "org.mockito:mockito-core"
+
+    runtimeOnly "org.springframework.boot:spring-boot-properties-migrator"
 }
 
 tasks.named("test") {

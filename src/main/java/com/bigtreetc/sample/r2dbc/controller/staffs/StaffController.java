@@ -234,7 +234,7 @@ public class StaffController extends AbstractRestController {
         .map(
             pages -> {
               val csvList = modelMapper.map(pages.getContent(), toListType(StaffCsv.class));
-              val dataBuffer = response.bufferFactory().allocateBuffer();
+              val dataBuffer = response.bufferFactory().allocateBuffer(1024);
               CsvUtils.writeCsv(StaffCsv.class, csvList, dataBuffer);
               return new InputStreamResource(dataBuffer.asInputStream(true));
             })

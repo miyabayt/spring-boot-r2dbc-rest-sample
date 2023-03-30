@@ -234,7 +234,7 @@ public class UserController extends AbstractRestController {
         .map(
             pages -> {
               val csvList = modelMapper.map(pages.getContent(), toListType(UserCsv.class));
-              val dataBuffer = response.bufferFactory().allocateBuffer();
+              val dataBuffer = response.bufferFactory().allocateBuffer(1024);
               CsvUtils.writeCsv(UserCsv.class, csvList, dataBuffer);
               return new InputStreamResource(dataBuffer.asInputStream(true));
             })

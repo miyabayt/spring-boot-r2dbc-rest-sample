@@ -1,10 +1,10 @@
 package com.bigtreetc.sample.r2dbc.base.web.validator.annotation;
 
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 import lombok.val;
 import org.springframework.web.multipart.MultipartFile;
 

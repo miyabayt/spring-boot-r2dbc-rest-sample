@@ -1,7 +1,7 @@
 package com.bigtreetc.sample.r2dbc.controller.codecategories;
 
+import jakarta.validation.constraints.NotEmpty;
 import java.util.UUID;
-import javax.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 

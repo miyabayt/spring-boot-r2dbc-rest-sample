@@ -20,9 +20,10 @@ spring:
     password: ${spring.r2dbc.password}
     baseline-on-migrate: true
     placeholder-replacement: false
-  redis:
-    host: redis
-    port: 6379
+  data:
+    redis:
+      host: redis
+      port: 6379
 logging:
   level:
     org.springframework.r2dbc: INFO

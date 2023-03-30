@@ -221,7 +221,7 @@ public class CodeController extends AbstractRestController {
         .map(
             pages -> {
               val csvList = modelMapper.map(pages.getContent(), toListType(CodeCsv.class));
-              val dataBuffer = response.bufferFactory().allocateBuffer();
+              val dataBuffer = response.bufferFactory().allocateBuffer(1024);
               CsvUtils.writeCsv(CodeCsv.class, csvList, dataBuffer);
               return new InputStreamResource(dataBuffer.asInputStream(true));
             })
