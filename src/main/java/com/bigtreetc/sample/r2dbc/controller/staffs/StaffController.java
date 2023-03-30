@@ -121,8 +121,7 @@ public class StaffController extends AbstractRestController {
   @PostMapping("/staffs/search")
   public Mono<ApiResponse> searchByPost(
       @RequestBody SearchStaffRequest request, @Parameter(hidden = true) Pageable pageable) {
-    val criteria = modelMapper.map(request, StaffCriteria.class);
-    return staffService.findAll(criteria, pageable).flatMap(this::toApiResponse);
+    return search(request, pageable);
   }
 
   /**

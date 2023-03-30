@@ -121,8 +121,7 @@ public class UserController extends AbstractRestController {
   @PostMapping("/users/search")
   public Mono<ApiResponse> searchByPost(
       @RequestBody SearchUserRequest request, @Parameter(hidden = true) Pageable pageable) {
-    val criteria = modelMapper.map(request, UserCriteria.class);
-    return userService.findAll(criteria, pageable).flatMap(this::toApiResponse);
+    return search(request, pageable);
   }
 
   /**

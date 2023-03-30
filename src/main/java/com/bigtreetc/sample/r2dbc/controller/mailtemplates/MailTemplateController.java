@@ -111,8 +111,7 @@ public class MailTemplateController extends AbstractRestController {
   @PostMapping("/mailTemplates/search")
   public Mono<ApiResponse> searchByPost(
       @RequestBody SearchMailTemplateRequest request, @Parameter(hidden = true) Pageable pageable) {
-    val criteria = modelMapper.map(request, MailTemplateCriteria.class);
-    return mailTemplateService.findAll(criteria, pageable).flatMap(this::toApiResponse);
+    return search(request, pageable);
   }
 
   /**

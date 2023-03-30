@@ -2,12 +2,13 @@ plugins {
     id "java"
     id "idea"
     id "org.springframework.boot" version "${springBootVersion}"
-    id "io.spring.dependency-management" version "${dependencyManagementVersion}"
     id "org.eclipse.jkube.kubernetes" version "${jkubeVersion}"
     id "com.avast.gradle.docker-compose" version "0.16.11"
     id "com.diffplug.spotless" version "${spotlessVersion}"
     id "jacoco"
 }
+
+apply plugin: "io.spring.dependency-management"
 
 repositories {
     mavenCentral()

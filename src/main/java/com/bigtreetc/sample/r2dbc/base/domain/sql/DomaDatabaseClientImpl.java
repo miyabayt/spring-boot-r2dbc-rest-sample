@@ -51,10 +51,12 @@ public class DomaDatabaseClientImpl implements DomaDatabaseClient {
     DatabaseClient.GenericExecuteSpec executeSpec =
         r2dbcEntityTemplate.getDatabaseClient().sql(rawSql);
 
-    for (int i = 0; i < arguments.size(); i++) {
-      SqlArgument argument = arguments.get(i);
-      Object value = argument.getValue();
-      executeSpec = executeSpec.bind(i, value);
+    if (rawSql.contains("?")) {
+      for (int i = 0; i < arguments.size(); i++) {
+        SqlArgument argument = arguments.get(i);
+        Object value = argument.getValue();
+        executeSpec = executeSpec.bind(i, value);
+      }
     }
 
     return executeSpec;

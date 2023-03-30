@@ -112,8 +112,7 @@ public class CodeController extends AbstractRestController {
   @PostMapping("/codes/search")
   public Mono<ApiResponse> searchByPost(
       @RequestBody SearchCodeRequest request, @Parameter(hidden = true) Pageable pageable) {
-    val criteria = modelMapper.map(request, CodeCriteria.class);
-    return codeService.findAll(criteria, pageable).flatMap(this::toApiResponse);
+    return search(request, pageable);
   }
 
   /**

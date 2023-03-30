@@ -128,8 +128,7 @@ public class RoleController extends AbstractRestController {
   @PostMapping("/roles/search")
   public Mono<ApiResponse> searchByPost(
       @RequestBody SearchRoleRequest request, @Parameter(hidden = true) Pageable pageable) {
-    val criteria = modelMapper.map(request, RoleCriteria.class);
-    return roleService.findAll(criteria, pageable).flatMap(this::toApiResponse);
+    return search(request, pageable);
   }
 
   /**

@@ -11,7 +11,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @JsonIgnoreProperties(ignoreUnknown = true) // 定義されていないプロパティを無視してマッピングする
-@JsonPropertyOrder({"祝日ID", "祝日名", "日付"}) // CSVのヘッダ順
+@JsonPropertyOrder({"祝日ID", "名称", "日付"}) // CSVのヘッダ順
 @Getter
 @Setter
 public class HolidayCsv implements Serializable {
@@ -21,7 +21,7 @@ public class HolidayCsv implements Serializable {
   @JsonProperty("祝日ID")
   UUID id;
 
-  @JsonProperty("祝日名")
+  @JsonProperty("名称")
   String holidayName;
 
   @JsonProperty("日付")

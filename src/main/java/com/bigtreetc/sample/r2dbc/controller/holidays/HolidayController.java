@@ -109,8 +109,7 @@ public class HolidayController extends AbstractRestController {
   @PostMapping("/holidays/search")
   public Mono<ApiResponse> searchByPost(
       @RequestBody SearchHolidayRequest request, @Parameter(hidden = true) Pageable pageable) {
-    val criteria = modelMapper.map(request, HolidayCriteria.class);
-    return holidayService.findAll(criteria, pageable).flatMap(this::toApiResponse);
+    return search(request, pageable);
   }
 
   /**
