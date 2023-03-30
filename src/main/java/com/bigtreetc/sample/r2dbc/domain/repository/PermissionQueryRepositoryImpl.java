@@ -45,7 +45,6 @@ public class PermissionQueryRepositoryImpl implements PermissionQueryRepository 
 
     return databaseClient
         .all(sqlBuilder, Permission.class)
-        .collectList()
-        .map(list -> new PageImpl<>(list, pageable, selectOptions.getCount()));
+        .map(tuple2 -> new PageImpl<>(tuple2.getT1(), pageable, tuple2.getT2()));
   }
 }

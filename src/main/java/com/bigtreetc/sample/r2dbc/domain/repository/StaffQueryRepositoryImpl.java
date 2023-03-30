@@ -44,7 +44,6 @@ public class StaffQueryRepositoryImpl implements StaffQueryRepository {
 
     return databaseClient
         .all(sqlBuilder, Staff.class)
-        .collectList()
-        .map(list -> new PageImpl<>(list, pageable, selectOptions.getCount()));
+        .map(tuple2 -> new PageImpl<>(tuple2.getT1(), pageable, tuple2.getT2()));
   }
 }

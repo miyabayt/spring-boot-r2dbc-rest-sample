@@ -44,7 +44,6 @@ public class UserQueryRepositoryImpl implements UserQueryRepository {
 
     return databaseClient
         .all(sqlBuilder, User.class)
-        .collectList()
-        .map(list -> new PageImpl<>(list, pageable, selectOptions.getCount()));
+        .map(tuple2 -> new PageImpl<>(tuple2.getT1(), pageable, tuple2.getT2()));
   }
 }

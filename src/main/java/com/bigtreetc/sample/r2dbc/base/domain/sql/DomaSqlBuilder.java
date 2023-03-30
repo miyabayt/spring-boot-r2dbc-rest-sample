@@ -58,14 +58,17 @@ public class DomaSqlBuilder {
     return this;
   }
 
-  public SqlStatement build() {
+  public DomaSqlStatement build() {
     String sqlTemplate = getSqlTemplate(this.sqlFilePath);
     SqlParser parser = new SqlParser(sqlTemplate);
     SqlNode node = parser.parse();
     SqlNode transformedSqlNode = this.dialect.transformSelectSqlNode(node, this.options);
+    SqlNode countSqlNode = this.dialect.transformSelectSqlNodeForGettingCount(node);
     NodePreparedSqlBuilder builder = createNodePreparedSqlBuilder();
     PreparedSql preparedSql = builder.build(transformedSqlNode, Function.identity());
-    return toSqlStatement(preparedSql);
+    PreparedSql countPreparedSql = builder.build(countSqlNode, Function.identity());
+    SqlStatement sqlStatement = toSqlStatement(preparedSql);
+    return new DomaSqlStatement(sqlStatement, countPreparedSql);
   }
 
   private NodePreparedSqlBuilder createNodePreparedSqlBuilder() {

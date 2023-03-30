@@ -13,11 +13,9 @@ import org.seasar.doma.jdbc.dialect.StandardDialect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.flyway.FlywayProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.jdbc.DatabaseDriver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.core.env.Environment;
 import org.springframework.data.convert.ReadingConverter;
 import org.springframework.data.convert.WritingConverter;
 import org.springframework.data.domain.ReactiveAuditorAware;
@@ -25,6 +23,7 @@ import org.springframework.data.r2dbc.config.AbstractR2dbcConfiguration;
 import org.springframework.data.r2dbc.config.EnableR2dbcAuditing;
 import org.springframework.data.r2dbc.convert.MappingR2dbcConverter;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
+import org.springframework.data.r2dbc.dialect.DialectResolver;
 import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
@@ -88,17 +87,14 @@ public class R2dbcConfig extends AbstractR2dbcConfiguration {
   }
 
   @Bean
-  public Dialect dialect(Environment environment) {
-    String url = environment.getProperty("spring.datasource.url");
-    if (url != null) {
-      DatabaseDriver databaseDriver = DatabaseDriver.fromJdbcUrl(url);
-      switch (databaseDriver) {
-        case SQLSERVER, MYSQL -> {
-          return new MysqlDialect();
-        }
-        case POSTGRESQL -> {
-          return new PostgresDialect();
-        }
+  public Dialect dialect(ConnectionFactory connectionFactory) {
+    String dialectName = DialectResolver.getDialect(connectionFactory).getClass().getSimpleName();
+    switch (dialectName) {
+      case "MySqlDialect" -> {
+        return new MysqlDialect();
+      }
+      case "PostgresDialect" -> {
+        return new PostgresDialect();
       }
     }
     return new StandardDialect();
