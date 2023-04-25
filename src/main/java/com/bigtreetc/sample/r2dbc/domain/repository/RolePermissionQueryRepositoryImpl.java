@@ -44,7 +44,7 @@ public class RolePermissionQueryRepositoryImpl implements RolePermissionQueryRep
             .options(selectOptions);
 
     return databaseClient
-        .all(sqlBuilder, RolePermission.class)
+        .allWithCount(sqlBuilder, RolePermission.class)
         .map(tuple2 -> new PageImpl<>(tuple2.getT1(), pageable, tuple2.getT2()));
   }
 }

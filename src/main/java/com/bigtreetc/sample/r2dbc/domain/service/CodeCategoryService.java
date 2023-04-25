@@ -41,6 +41,18 @@ public class CodeCategoryService {
   }
 
   /**
+   * コード分類マスタを検索します。
+   *
+   * @param criteria
+   * @return
+   */
+  @Transactional(readOnly = true) // 読み取りのみの場合は指定する
+  public Flux<CodeCategory> findAll(final CodeCategoryCriteria criteria) {
+    Assert.notNull(criteria, "criteria must not be null");
+    return codeCategoryRepository.findAll(criteria);
+  }
+
+  /**
    * コード分類マスタを取得します。
    *
    * @return

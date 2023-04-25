@@ -40,6 +40,18 @@ public class HolidayService {
   }
 
   /**
+   * 祝日マスタを検索します。
+   *
+   * @param criteria
+   * @return
+   */
+  @Transactional(readOnly = true) // 読み取りのみの場合は指定する
+  public Flux<Holiday> findAll(final HolidayCriteria criteria) {
+    Assert.notNull(criteria, "criteria must not be null");
+    return holidayRepository.findAll(criteria);
+  }
+
+  /**
    * 祝日マスタを取得します。
    *
    * @return

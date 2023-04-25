@@ -1,9 +1,7 @@
 package com.bigtreetc.sample.r2dbc.domain.service;
 
 import com.bigtreetc.sample.r2dbc.base.exception.NoDataFoundException;
-import com.bigtreetc.sample.r2dbc.domain.model.Role;
-import com.bigtreetc.sample.r2dbc.domain.model.RoleCriteria;
-import com.bigtreetc.sample.r2dbc.domain.model.RolePermission;
+import com.bigtreetc.sample.r2dbc.domain.model.*;
 import com.bigtreetc.sample.r2dbc.domain.repository.PermissionRepository;
 import com.bigtreetc.sample.r2dbc.domain.repository.RolePermissionRepository;
 import com.bigtreetc.sample.r2dbc.domain.repository.RoleRepository;
@@ -45,6 +43,18 @@ public class RoleService {
     Assert.notNull(criteria, "criteria must not be null");
     Assert.notNull(pageable, "pageable must not be null");
     return roleRepository.findAll(criteria, pageable);
+  }
+
+  /**
+   * ロールマスタを検索します。
+   *
+   * @param criteria
+   * @return
+   */
+  @Transactional(readOnly = true) // 読み取りのみの場合は指定する
+  public Flux<Role> findAll(final RoleCriteria criteria) {
+    Assert.notNull(criteria, "criteria must not be null");
+    return roleRepository.findAll(criteria);
   }
 
   /**
