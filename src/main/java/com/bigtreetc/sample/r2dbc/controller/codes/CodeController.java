@@ -1,7 +1,5 @@
 package com.bigtreetc.sample.r2dbc.controller.codes;
 
-import static com.bigtreetc.sample.r2dbc.base.util.TypeUtils.toListType;
-
 import com.bigtreetc.sample.r2dbc.base.util.CsvUtils;
 import com.bigtreetc.sample.r2dbc.base.web.controller.api.AbstractRestController;
 import com.bigtreetc.sample.r2dbc.base.web.controller.api.request.Requests;
@@ -19,16 +17,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Tag(name = "コードマスタ")
@@ -212,18 +208,18 @@ public class CodeController extends AbstractRestController {
    */
   @Operation(summary = "コードCSV出力", description = "CSVファイルを出力します。")
   @PreAuthorize("hasAuthority('code:read')")
-  @GetMapping("/codes/export/{filename:.+\\.csv}")
-  public Mono<ResponseEntity<Resource>> downloadCsv(
-      @PathVariable String filename, ServerHttpResponse response) {
-    return codeService
-        .findAll(new CodeCriteria(), Pageable.unpaged())
-        .map(
-            pages -> {
-              val csvList = modelMapper.map(pages.getContent(), toListType(CodeCsv.class));
-              val dataBuffer = response.bufferFactory().allocateBuffer(1024);
-              CsvUtils.writeCsv(CodeCsv.class, csvList, dataBuffer);
-              return new InputStreamResource(dataBuffer.asInputStream(true));
-            })
-        .map(resource -> toResponseEntity(resource, filename, true));
+  @PostMapping("/codes/export/{filename:.+\\.csv}")
+  public Mono<Void> downloadCsv(@PathVariable String filename, ServerHttpResponse response) {
+    // ダウンロード時のファイル名をセットする
+    setContentDispositionHeader(response, filename, true);
+
+    val dataBufferFactory = response.bufferFactory();
+    val criteria = new CodeCriteria();
+    val data = codeService.findAll(criteria);
+    val dataBufferFlux =
+        CsvUtils.writeCsv(
+            dataBufferFactory, CodeCsv.class, data, code -> modelMapper.map(code, CodeCsv.class));
+
+    return response.writeAndFlushWith(dataBufferFlux.map(Flux::just));
   }
 }

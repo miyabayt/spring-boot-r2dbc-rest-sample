@@ -40,6 +40,18 @@ public class StaffService {
   }
 
   /**
+   * 担当者マスタを検索します。
+   *
+   * @param criteria
+   * @return
+   */
+  @Transactional(readOnly = true) // 読み取りのみの場合は指定する
+  public Flux<Staff> findAll(final StaffCriteria criteria) {
+    Assert.notNull(criteria, "criteria must not be null");
+    return staffRepository.findAll(criteria);
+  }
+
+  /**
    * 担当者マスタを取得します。
    *
    * @param criteria

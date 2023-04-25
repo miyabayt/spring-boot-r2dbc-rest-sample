@@ -40,6 +40,18 @@ public class UserService {
   }
 
   /**
+   * ユーザを検索します。
+   *
+   * @param criteria
+   * @return
+   */
+  @Transactional(readOnly = true) // 読み取りのみの場合は指定する
+  public Flux<User> findAll(final UserCriteria criteria) {
+    Assert.notNull(criteria, "criteria must not be null");
+    return userRepository.findAll(criteria);
+  }
+
+  /**
    * ユーザを取得します。
    *
    * @param criteria

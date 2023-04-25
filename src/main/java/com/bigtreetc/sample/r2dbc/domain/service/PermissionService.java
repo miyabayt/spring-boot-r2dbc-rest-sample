@@ -26,7 +26,7 @@ public class PermissionService {
   @NonNull final PermissionRepository permissionRepository;
 
   /**
-   * 権限を検索します。
+   * 権限マスタを検索します。
    *
    * @param criteria
    * @param pageable
@@ -41,7 +41,19 @@ public class PermissionService {
   }
 
   /**
-   * 権限を取得します。
+   * 権限マスタを検索します。
+   *
+   * @param criteria
+   * @return
+   */
+  @Transactional(readOnly = true) // 読み取りのみの場合は指定する
+  public Flux<Permission> findAll(final PermissionCriteria criteria) {
+    Assert.notNull(criteria, "criteria must not be null");
+    return permissionRepository.findAll(criteria);
+  }
+
+  /**
+   * 権限マスタを取得します。
    *
    * @param criteria
    * @return
@@ -53,7 +65,7 @@ public class PermissionService {
   }
 
   /**
-   * 権限を取得します。
+   * 権限マスタを取得します。
    *
    * @param id
    * @return
@@ -67,7 +79,7 @@ public class PermissionService {
   }
 
   /**
-   * 権限を登録します。
+   * 権限マスタを登録します。
    *
    * @param permission
    * @return
@@ -79,7 +91,7 @@ public class PermissionService {
   }
 
   /**
-   * 権限を登録します。
+   * 権限マスタを登録します。
    *
    * @param permissions
    * @return
@@ -93,7 +105,7 @@ public class PermissionService {
   }
 
   /**
-   * 権限を更新します。
+   * 権限マスタを更新します。
    *
    * @param permission
    * @return
@@ -104,7 +116,7 @@ public class PermissionService {
   }
 
   /**
-   * 権限を更新します。
+   * 権限マスタを更新します。
    *
    * @param permissions
    * @return
@@ -115,7 +127,7 @@ public class PermissionService {
   }
 
   /**
-   * 権限を削除します。
+   * 権限マスタを削除します。
    *
    * @return
    */
@@ -125,7 +137,7 @@ public class PermissionService {
   }
 
   /**
-   * 権限を削除します。
+   * 権限マスタを削除します。
    *
    * @return
    */

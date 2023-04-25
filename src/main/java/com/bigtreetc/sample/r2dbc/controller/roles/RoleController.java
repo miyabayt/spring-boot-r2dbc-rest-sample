@@ -1,7 +1,5 @@
 package com.bigtreetc.sample.r2dbc.controller.roles;
 
-import static com.bigtreetc.sample.r2dbc.base.util.TypeUtils.toListType;
-
 import com.bigtreetc.sample.r2dbc.base.util.CsvUtils;
 import com.bigtreetc.sample.r2dbc.base.web.controller.api.AbstractRestController;
 import com.bigtreetc.sample.r2dbc.base.web.controller.api.request.Requests;
@@ -20,16 +18,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Tag(name = "ロールマスタ")
@@ -236,18 +232,18 @@ public class RoleController extends AbstractRestController {
    */
   @Operation(summary = "ロールマスタCSV出力", description = "CSVファイルを出力します。")
   @PreAuthorize("hasAuthority('role:read')")
-  @GetMapping("/roles/export/{filename:.+\\.csv}")
-  public Mono<ResponseEntity<Resource>> downloadCsv(
-      @PathVariable String filename, ServerHttpResponse response) {
-    return roleService
-        .findAll(new RoleCriteria(), Pageable.unpaged())
-        .map(
-            pages -> {
-              val csvList = modelMapper.map(pages.getContent(), toListType(RoleCsv.class));
-              val dataBuffer = response.bufferFactory().allocateBuffer(1024);
-              CsvUtils.writeCsv(RoleCsv.class, csvList, dataBuffer);
-              return new InputStreamResource(dataBuffer.asInputStream(true));
-            })
-        .map(resource -> toResponseEntity(resource, filename, true));
+  @PostMapping("/roles/export/{filename:.+\\.csv}")
+  public Mono<Void> downloadCsv(@PathVariable String filename, ServerHttpResponse response) {
+    // ダウンロード時のファイル名をセットする
+    setContentDispositionHeader(response, filename, true);
+
+    val dataBufferFactory = response.bufferFactory();
+    val criteria = new RoleCriteria();
+    val data = roleService.findAll(criteria);
+    val dataBufferFlux =
+        CsvUtils.writeCsv(
+            dataBufferFactory, RoleCsv.class, data, role -> modelMapper.map(role, RoleCsv.class));
+
+    return response.writeAndFlushWith(dataBufferFlux.map(Flux::just));
   }
 }

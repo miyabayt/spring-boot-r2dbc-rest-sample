@@ -41,6 +41,18 @@ public class MailTemplateService {
   }
 
   /**
+   * メールテンプレートを検索します。
+   *
+   * @param criteria
+   * @return
+   */
+  @Transactional(readOnly = true) // 読み取りのみの場合は指定する
+  public Flux<MailTemplate> findAll(final MailTemplateCriteria criteria) {
+    Assert.notNull(criteria, "criteria must not be null");
+    return mailTemplateRepository.findAll(criteria);
+  }
+
+  /**
    * メールテンプレートを取得します。
    *
    * @param criteria

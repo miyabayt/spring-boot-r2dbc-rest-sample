@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RequiredArgsConstructor
@@ -44,7 +45,18 @@ public class PermissionQueryRepositoryImpl implements PermissionQueryRepository 
             .options(selectOptions);
 
     return databaseClient
-        .all(sqlBuilder, Permission.class)
+        .allWithCount(sqlBuilder, Permission.class)
         .map(tuple2 -> new PageImpl<>(tuple2.getT1(), pageable, tuple2.getT2()));
+  }
+
+  @Override
+  public Flux<Permission> findAll(final PermissionCriteria criteria) {
+    val sqlBuilder =
+        DomaSqlBuilder.builder()
+            .sqlFilePath(
+                "META-INF/com/bigtreetc/sample/r2dbc/domain/repository/PermissionQueryRepository/findAll.sql")
+            .addParameter("criteria", PermissionCriteria.class, criteria);
+
+    return databaseClient.all(sqlBuilder, Permission.class);
   }
 }

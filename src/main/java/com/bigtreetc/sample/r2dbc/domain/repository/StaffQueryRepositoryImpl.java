@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RequiredArgsConstructor
@@ -43,7 +44,18 @@ public class StaffQueryRepositoryImpl implements StaffQueryRepository {
             .options(selectOptions);
 
     return databaseClient
-        .all(sqlBuilder, Staff.class)
+        .allWithCount(sqlBuilder, Staff.class)
         .map(tuple2 -> new PageImpl<>(tuple2.getT1(), pageable, tuple2.getT2()));
+  }
+
+  @Override
+  public Flux<Staff> findAll(final StaffCriteria criteria) {
+    val sqlBuilder =
+        DomaSqlBuilder.builder()
+            .sqlFilePath(
+                "META-INF/com/bigtreetc/sample/r2dbc/domain/repository/StaffQueryRepository/findAll.sql")
+            .addParameter("criteria", StaffCriteria.class, criteria);
+
+    return databaseClient.all(sqlBuilder, Staff.class);
   }
 }

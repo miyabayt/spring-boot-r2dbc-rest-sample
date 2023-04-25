@@ -3,18 +3,20 @@ package com.bigtreetc.sample.r2dbc.base.util;
 import static com.fasterxml.jackson.dataformat.csv.CsvGenerator.Feature.ALWAYS_QUOTE_STRINGS;
 
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
+import com.fasterxml.jackson.dataformat.csv.CsvSchema;
+import java.nio.charset.StandardCharsets;
+import java.util.function.Function;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import org.springframework.core.io.buffer.DataBuffer;
+import org.springframework.core.io.buffer.*;
+import reactor.core.Exceptions;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /** TSVファイル出力ユーティリティ */
 @Slf4j
 public class CsvUtils {
-
-  public static final String CHARSET__WINDOWS_31J = "Windows-31J";
 
   private static final CsvMapper csvMapper = createCsvMapper();
 
@@ -33,71 +35,126 @@ public class CsvUtils {
   /**
    * CSVファイルを出力します。
    *
+   * @param dataBufferFactory
    * @param clazz
    * @param data
-   * @param dataBuffer
+   * @param mapper
+   * @return
    */
-  public static void writeCsv(Class<?> clazz, Object data, DataBuffer dataBuffer) {
-    write(dataBuffer, clazz, data, CHARSET__WINDOWS_31J, ',');
+  public static Flux<DataBuffer> writeCsv(
+      DataBufferFactory dataBufferFactory,
+      Class<?> clazz,
+      Flux<?> data,
+      Function<Object, ?> mapper) {
+    return write(dataBufferFactory, clazz, data, mapper, StandardCharsets.UTF_8.name(), ',');
   }
 
   /**
    * CSVファイルを出力します。
    *
+   * @param dataBufferFactory
    * @param clazz
    * @param data
-   * @param dataBuffer
+   * @param mapper
    * @param charsetName
+   * @return
    */
-  public static void writeCsv(
-      Class<?> clazz, Object data, DataBuffer dataBuffer, String charsetName) {
-    write(dataBuffer, clazz, data, charsetName, ',');
+  public static Flux<DataBuffer> writeCsv(
+      DataBufferFactory dataBufferFactory,
+      Class<?> clazz,
+      Flux<?> data,
+      Function<Object, ?> mapper,
+      String charsetName) {
+    return write(dataBufferFactory, clazz, data, mapper, charsetName, ',');
   }
 
   /**
    * TSVファイルを出力します。
    *
+   * @param dataBufferFactory
    * @param clazz
    * @param data
-   * @throws Exception
+   * @param mapper
+   * @return
    */
-  public static void writeTsv(DataBuffer dataBuffer, Class<?> clazz, Object data) {
-    write(dataBuffer, clazz, data, CHARSET__WINDOWS_31J, '\t');
+  public static Flux<DataBuffer> writeTsv(
+      DataBufferFactory dataBufferFactory,
+      Class<?> clazz,
+      Flux<?> data,
+      Function<Object, ?> mapper) {
+    return write(dataBufferFactory, clazz, data, mapper, StandardCharsets.UTF_8.name(), '\t');
   }
 
   /**
    * TSVファイルを出力します。
    *
+   * @param dataBufferFactory
    * @param clazz
    * @param data
+   * @param mapper
    * @param charsetName
-   * @throws Exception
+   * @return
    */
-  public static void writeTsv(
-      DataBuffer dataBuffer, Class<?> clazz, Object data, String charsetName) {
-    write(dataBuffer, clazz, data, charsetName, '\t');
+  public static Flux<DataBuffer> writeTsv(
+      DataBufferFactory dataBufferFactory,
+      Class<?> clazz,
+      Flux<?> data,
+      Function<Object, ?> mapper,
+      String charsetName) {
+    return write(dataBufferFactory, clazz, data, mapper, charsetName, '\t');
   }
 
   /**
    * CSVファイルを出力します。
    *
-   * @param dataBuffer
+   * @param dataBufferFactory
    * @param clazz
    * @param data
+   * @param mapper
    * @param charsetName
    * @param delimiter
    * @return
-   * @throws Exception
    */
   @SneakyThrows
-  private static void write(
-      DataBuffer dataBuffer, Class<?> clazz, Object data, String charsetName, char delimiter) {
-    // CSVヘッダをオブジェクトから作成する
-    val schema = csvMapper.schemaFor(clazz).withHeader().withColumnSeparator(delimiter);
+  private static Flux<DataBuffer> write(
+      DataBufferFactory dataBufferFactory,
+      Class<?> clazz,
+      Flux<?> data,
+      Function<Object, ?> mapper,
+      String charsetName,
+      char delimiter) {
+    // CSVスキーマ、デリミタをセットする
+    val schema = csvMapper.schemaFor(clazz).withColumnSeparator(delimiter);
 
-    // 書き出し
-    try (Writer writer = new OutputStreamWriter(dataBuffer.asOutputStream(), charsetName)) {
-      csvMapper.writer(schema).writeValue(writer, data);
+    // ヘッダーを書き出す
+    val headerDataBuffer =
+        mapToCsvLine(dataBufferFactory, mapper, schema.withHeader(), null, charsetName);
+
+    return Flux.concat(
+        Mono.just(headerDataBuffer),
+        data.concatMap(
+            obj -> {
+              val withoutHeaderSchema = schema.withoutHeader();
+              val lineDataBuffer =
+                  mapToCsvLine(dataBufferFactory, mapper, withoutHeaderSchema, obj, charsetName);
+              return Mono.just(lineDataBuffer);
+            }));
+  }
+
+  private static DataBuffer mapToCsvLine(
+      DataBufferFactory dataBufferFactory,
+      Function<Object, ?> mapper,
+      CsvSchema schema,
+      Object obj,
+      String charsetName) {
+    try {
+      val mapped = (mapper != null && obj != null) ? mapper.apply(obj) : obj;
+      val csvWriter = csvMapper.writer(schema);
+      val csvLine = csvWriter.writeValueAsString(mapped);
+      val dataBuffer = dataBufferFactory.wrap(csvLine.getBytes(charsetName));
+      return DataBufferUtils.retain(dataBuffer);
+    } catch (Exception e) {
+      throw Exceptions.propagate(e);
     }
   }
 }
