@@ -75,7 +75,7 @@ dependencies {
     implementation "org.flywaydb:flyway-core"
     implementation "org.flywaydb:flyway-mysql"
 
-    runtimeOnly "io.asyncer:r2dbc-mysql:0.9.1"
+    runtimeOnly "io.asyncer:r2dbc-mysql:0.9.3"
     runtimeOnly "com.mysql:mysql-connector-j"
     // runtimeOnly "io.r2dbc:r2dbc-postgresql"
     // runtimeOnly "org.postgresql:postgresql"
