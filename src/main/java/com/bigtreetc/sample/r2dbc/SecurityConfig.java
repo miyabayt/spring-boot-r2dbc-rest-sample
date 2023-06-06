@@ -133,6 +133,7 @@ public class SecurityConfig {
     String[] permittedUrls = {
       API_AUTH_LOGIN_URL,
       API_AUTH_REFRESH_URL,
+      API_AUTH_LOGOUT_URL,
       ACTUATOR_URL,
       SWAGGER_RESOURCES_URL,
       SWAGGER_UI_URL,

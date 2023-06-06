@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.security.core.context.SecurityContext;
@@ -52,7 +51,6 @@ public class AuthController extends AbstractRestController {
    * @param request
    * @return
    */
-  @PreAuthorize("isAuthenticated()")
   @PostMapping("/logout")
   public Mono<ApiResponse> logout(@RequestBody RefreshTokenRequest request) {
     val accessToken = request.getAccessToken();

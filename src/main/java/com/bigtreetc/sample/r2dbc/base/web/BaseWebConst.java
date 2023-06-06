@@ -43,6 +43,8 @@ public interface BaseWebConst {
 
   String API_AUTH_REFRESH_URL = "/api/auth/refresh";
 
+  String API_AUTH_LOGOUT_URL = "/api/auth/logout";
+
   String WEBJARS_URL = "/webjars/**";
 
   String ACTUATOR_URL = "/actuator/**";
