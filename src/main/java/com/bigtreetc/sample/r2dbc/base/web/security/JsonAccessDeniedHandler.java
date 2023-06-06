@@ -40,7 +40,7 @@ public class JsonAccessDeniedHandler implements ServerAccessDeniedHandler {
               DataBuffer buffer = dataBufferFactory.wrap(bytes);
               return response
                   .writeWith(Mono.just(buffer))
-                  .doOnError((error) -> DataBufferUtils.release(buffer));
+                  .doOnError(error -> DataBufferUtils.release(buffer));
             });
   }
 }
