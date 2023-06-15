@@ -3,7 +3,6 @@ plugins {
     id "idea"
     id "org.springframework.boot" version "${springBootVersion}"
     id "org.eclipse.jkube.kubernetes" version "${jkubeVersion}"
-    id "com.avast.gradle.docker-compose" version "0.16.12"
     id "com.diffplug.spotless" version "${spotlessVersion}"
     id "jacoco"
 }
@@ -59,6 +58,7 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-data-r2dbc"
     implementation "org.springframework.boot:spring-boot-starter-data-redis-reactive"
     developmentOnly "org.springframework.boot:spring-boot-devtools"
+    developmentOnly "org.springframework.boot:spring-boot-docker-compose"
 
     implementation "com.fasterxml.jackson.module:jackson-module-parameter-names"
     implementation "com.fasterxml.jackson.datatype:jackson-datatype-jdk8"
@@ -75,7 +75,7 @@ dependencies {
     implementation "org.flywaydb:flyway-core"
     implementation "org.flywaydb:flyway-mysql"
 
-    runtimeOnly "io.asyncer:r2dbc-mysql:0.9.3"
+    runtimeOnly "io.asyncer:r2dbc-mysql"
     runtimeOnly "com.mysql:mysql-connector-j"
     // runtimeOnly "io.r2dbc:r2dbc-postgresql"
     // runtimeOnly "org.postgresql:postgresql"
@@ -85,9 +85,11 @@ dependencies {
     testImplementation "org.springframework.security:spring-security-test"
     testImplementation "io.projectreactor:reactor-test"
     testImplementation "com.h2database:h2"
-    testImplementation "org.testcontainers:junit-jupiter:1.17.6"
-    testImplementation "org.testcontainers:r2dbc:1.17.6"
-    testImplementation "org.testcontainers:mysql:1.17.6"
+
+    testImplementation "org.springframework.boot:spring-boot-testcontainers"
+    testImplementation "org.testcontainers:junit-jupiter"
+    testImplementation "org.testcontainers:r2dbc"
+    testImplementation "org.testcontainers:mysql"
     testImplementation "io.r2dbc:r2dbc-h2"
 
     testImplementation "org.assertj:assertj-core"

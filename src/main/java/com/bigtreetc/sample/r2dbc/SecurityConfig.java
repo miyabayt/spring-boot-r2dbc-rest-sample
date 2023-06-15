@@ -141,19 +141,16 @@ public class SecurityConfig {
       WEBJARS_URL
     };
 
-    http.csrf()
-        .disable()
-        .authorizeExchange()
-        .pathMatchers(permittedUrls)
-        .permitAll()
-        .anyExchange()
-        .authenticated()
-        .and()
+    http.csrf(ServerHttpSecurity.CsrfSpec::disable)
+        .authorizeExchange(
+            authorize ->
+                authorize.pathMatchers(permittedUrls).permitAll().anyExchange().authenticated())
         .addFilterBefore(jwtRefreshFilter, SecurityWebFiltersOrder.AUTHENTICATION)
         .addFilterAt(authenticationWebFilter, SecurityWebFiltersOrder.AUTHENTICATION)
         .addFilterBefore(jwtVerificationFilter, SecurityWebFiltersOrder.AUTHORIZATION)
-        .exceptionHandling()
-        .accessDeniedHandler(new JsonAccessDeniedHandler());
+        .exceptionHandling(
+            exceptionHandling ->
+                exceptionHandling.accessDeniedHandler(new JsonAccessDeniedHandler()));
 
     return http.build();
   }
