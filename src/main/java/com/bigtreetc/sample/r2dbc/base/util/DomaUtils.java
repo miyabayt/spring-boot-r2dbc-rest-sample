@@ -23,7 +23,7 @@ public class DomaUtils {
    */
   public static SelectOptions toSelectOptions(Pageable pageable) {
     if (pageable.isUnpaged()) {
-      return SelectOptions.get().count();
+      return SelectOptions.get();
     }
     int page = pageable.getPageNumber();
     int perpage = pageable.getPageSize();

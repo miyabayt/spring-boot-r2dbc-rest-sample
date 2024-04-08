@@ -1,6 +1,6 @@
 package com.bigtreetc.sample.r2dbc.domain.repository;
 
-import static com.bigtreetc.sample.r2dbc.base.domain.sql.DomaUtils.toSelectOptions;
+import static com.bigtreetc.sample.r2dbc.base.util.DomaUtils.toSelectOptions;
 
 import com.bigtreetc.sample.r2dbc.base.domain.sql.DomaDatabaseClient;
 import com.bigtreetc.sample.r2dbc.base.domain.sql.DomaSqlBuilder;

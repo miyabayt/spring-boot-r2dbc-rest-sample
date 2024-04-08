@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import javax.sql.DataSource;
 import lombok.SneakyThrows;
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
@@ -99,7 +98,7 @@ public class DomaSqlBuilder {
                   Wrapper<?> w = it.getWrapper();
                   return new SqlArgument(w.getBasicClass(), w.get());
                 })
-            .collect(Collectors.toList());
+            .toList();
     String rawSql = getFormattedSql(preparedSql.getRawSql());
     String formattedSql = getFormattedSql(preparedSql.getFormattedSql());
     return new SqlStatement(rawSql, formattedSql, arguments);
